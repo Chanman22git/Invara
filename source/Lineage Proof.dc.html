@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" rx="16" fill="#1f2b3e"/>
+    <circle cx="50" cy="30" r="5" fill="#fff"/>
+    <line x1="50" y1="35" x2="50" y2="48" stroke="#6155d6" stroke-width="2"/>
+    <circle cx="34" cy="58" r="4" fill="#2f5fd0"/>
+    <circle cx="66" cy="58" r="4" fill="#2f5fd0"/>
+    <line x1="50" y1="48" x2="34" y2="54" stroke="#6155d6" stroke-width="2"/>
+    <line x1="50" y1="48" x2="66" y2="54" stroke="#6155d6" stroke-width="2"/>
+    <text x="50" y="84" font-family="monospace" font-size="9" fill="#aab6c8" text-anchor="middle">LINEAGE</text>
+  </svg>
+</template>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  ::selection { background: #d4e2f5; }
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #eceff4; font-family: 'IBM Plex Sans', sans-serif; color: #1b2433; -webkit-font-smoothing: antialiased; padding: 0 0 64px;">
+
+  <!-- ================= TOP BAR ================= -->
+  <div style="position: relative; padding: 22px 32px 22px; background: linear-gradient(115deg, #161d29 0%, #1f2b3e 48%, #283750 100%); border-bottom: 1px solid #0e131c; overflow: hidden;">
+    <!-- accent hairline -->
+    <div style="position: absolute; left: 0; top: 0; height: 2px; width: 100%; background: linear-gradient(90deg, #2f5fd0 0%, #6155d6 38%, rgba(97,85,214,0) 72%);"></div>
+    <!-- faint grid texture -->
+    <div style="position: absolute; inset: 0; background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0); background-size: 22px 22px; pointer-events: none;"></div>
+
+    <div style="position: relative; display: flex; align-items: center; justify-content: space-between; gap: 28px; max-width: 1500px; margin: 0 auto;">
+
+      <!-- brand lockup -->
+      <div style="display: flex; align-items: center; gap: 15px; flex-shrink: 0;">
+        <!-- lineage monogram -->
+        <div style="position: relative; width: 42px; height: 42px; flex-shrink: 0; border-radius: 10px; background: linear-gradient(140deg, #2f5fd0, #6155d6); box-shadow: 0 6px 18px rgba(47,95,208,0.45), inset 0 1px 0 rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center;">
+          <div style="position: relative; width: 24px; height: 26px;">
+            <!-- lineage node -->
+            <span style="position: absolute; left: 9px; top: 0; width: 6px; height: 6px; border-radius: 50%; background: #ffffff;"></span>
+            <!-- connector -->
+            <span style="position: absolute; left: 11px; top: 6px; width: 1.5px; height: 4px; background: rgba(255,255,255,0.6);"></span>
+            <!-- proof seal -->
+            <span style="position: absolute; left: 6px; top: 9px; width: 12px; height: 12px; border: 1.5px solid #ffffff; border-radius: 2px; transform: rotate(45deg);"></span>
+            <!-- verified core -->
+            <span style="position: absolute; left: 9.5px; top: 12.5px; width: 5px; height: 5px; border-radius: 50%; background: #ffffff;"></span>
+          </div>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 16px; letter-spacing: 4px; color: #ffffff; line-height: 1;">INVARA</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 2.5px; text-transform: uppercase; color: #8f9fb5; margin-top: 6px;">Invariants,&nbsp;verified</div>
+        </div>
+      </div>
+
+      <!-- tagline -->
+      <div style="flex: 1; max-width: 560px; font-size: 12.5px; line-height: 1.5; color: #aeb8c7; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 24px;">{{ tagline }}</div>
+
+      <!-- status cluster -->
+      <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
+        <div style="display: flex; align-items: center; gap: 8px; padding: 6px 13px; background: rgba(14,143,99,0.16); border: 1px solid rgba(47,208,138,0.4); border-radius: 999px;">
+          <span style="width: 7px; height: 7px; border-radius: 50%; background: #2fd08a; box-shadow: 0 0 0 3px rgba(47,208,138,0.2);"></span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; color: #7be3b5; text-transform: uppercase;">live</span>
+        </div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #aab5c5; letter-spacing: 0.5px; padding: 7px 13px; border: 1px solid rgba(255,255,255,0.13); border-radius: 999px; background: rgba(255,255,255,0.03);">{{ windowLabel }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SCOPE LINE ================= -->
+  <div style="display: flex; align-items: center; gap: 10px; padding: 8px 32px; background: #e6ebf1; border-bottom: 1px solid #d5dde6; font-size: 11.5px; color: #4a5567;">
+    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; color: #7c899a; text-transform: uppercase;">scope</span>
+    <span>Measures <strong style="color: #1b2433; font-weight: 600;">reliability</strong> — same path taken, required steps ran, cost within norms. <span style="color: #7c899a;">Not correctness, not safety, not a single health score.</span></span>
+  </div>
+
+  <!-- ================= CLASSIFIER CAUTION BANNER ================= -->
+  <sc-if value="{{ classifierBad }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; align-items: center; gap: 12px; padding: 11px 32px; background: #fbf1de; border-bottom: 1px solid #f0ddb6; color: #92670f;">
+      <div style="width: 9px; height: 9px; border-radius: 50%; background: #b06f12; flex-shrink: 0;"></div>
+      <div style="font-size: 12.5px; line-height: 1.5;"><strong style="font-weight: 600;">Intent classifier reads {{ classifierVal }} reproducible — below trust threshold.</strong> Every per-leaf number inherits its routing noise and is shown <span style="font-family: 'IBM Plex Mono', monospace;">low-confidence</span> until the gate clears. Fix the classifier before trusting the grid.</div>
+    </div>
+  </sc-if>
+
+  <div style="max-width: 1500px; margin: 0 auto; padding: 0 32px;">
+
+    <!-- ================= WINDOW / INTERVAL PICKER ================= -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin: 22px 0 0;">
+      <div style="display: flex; align-items: center; gap: 20px;">
+
+        <!-- AGENT FILTER -->
+        <div style="display: flex; align-items: center; gap: 8px; position: relative;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; color: #7c899a; text-transform: uppercase;">Agent</span>
+          <div onClick="{{ toggleAgent }}" style="display: flex; align-items: center; gap: 8px; padding: 6px 12px; background: #ffffff; border: 1px solid #d8e0e8; border-radius: 2px; cursor: pointer;" style-hover="background:#f1f5f9;">
+            <div style="width: 7px; height: 7px; border-radius: 50%; background: {{ agentDot }};"></div>
+            <div style="font-size: 12px; font-weight: 600; color: #1b2433;">{{ agentName }}</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #7c899a; margin-left: 2px;">{{ agentCaret }}</div>
+          </div>
+          <sc-if value="{{ agentOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position: absolute; top: calc(100% + 6px); left: 0; min-width: 268px; background: #ffffff; border: 1px solid #d8e0e8; border-radius: 3px; box-shadow: 0 8px 24px rgba(27,36,51,0.14); z-index: 40; overflow: hidden;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #7c899a; padding: 9px 12px 7px; border-bottom: 1px solid #eef2f6;">Select agent</div>
+              <sc-for list="{{ agentOptions }}" as="ag" hint-placeholder-count="4">
+                <div onClick="{{ ag.onSelect }}" style="display: flex; align-items: center; gap: 9px; padding: 9px 12px; cursor: pointer; border-bottom: 1px solid #eef2f6; background: {{ ag.rowBg }};" style-hover="background:#f1f5f9;">
+                  <div style="width: 7px; height: 7px; border-radius: 50%; background: {{ ag.dot }}; flex-shrink: 0;"></div>
+                  <div style="flex: 1;">
+                    <div style="font-size: 12px; font-weight: 600; color: #1b2433;">{{ ag.name }}</div>
+                    <div style="font-size: 10px; color: #7c899a; font-family: 'IBM Plex Mono', monospace; margin-top: 1px;">{{ ag.meta }}</div>
+                  </div>
+                  <sc-if value="{{ ag.active }}" hint-placeholder-val="{{ false }}"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2f5fd0;">&#10003;</div></sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <!-- TEAM FILTER -->
+        <div style="display: flex; align-items: center; gap: 8px; position: relative;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; color: #7c899a; text-transform: uppercase;">Team</span>
+          <div onClick="{{ toggleTeam }}" style="display: flex; align-items: center; gap: 8px; padding: 6px 12px; background: #ffffff; border: 1px solid #d8e0e8; border-radius: 2px; cursor: pointer; min-width: 96px;" style-hover="background:#f1f5f9;">
+            <div style="flex: 1; font-size: 12px; font-weight: 600; color: #1b2433;">{{ teamName }}</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #7c899a; margin-left: 2px;">{{ teamCaret }}</div>
+          </div>
+          <sc-if value="{{ teamOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position: absolute; top: calc(100% + 6px); left: 0; min-width: 180px; background: #ffffff; border: 1px solid #d8e0e8; border-radius: 3px; box-shadow: 0 8px 24px rgba(27,36,51,0.14); z-index: 40; overflow: hidden;">
+              <sc-for list="{{ teamOptions }}" as="tm" hint-placeholder-count="4">
+                <div onClick="{{ tm.onSelect }}" style="display: flex; align-items: center; justify-content: space-between; gap: 9px; padding: 9px 12px; cursor: pointer; border-bottom: 1px solid #eef2f6; background: {{ tm.rowBg }};" style-hover="background:#f1f5f9;">
+                  <div style="font-size: 12px; font-weight: 600; color: #1b2433;">{{ tm.name }}</div>
+                  <sc-if value="{{ tm.active }}" hint-placeholder-val="{{ false }}"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2f5fd0;">&#10003;</div></sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <!-- ORG FILTER -->
+        <div style="display: flex; align-items: center; gap: 8px; position: relative;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; color: #7c899a; text-transform: uppercase;">Org</span>
+          <div onClick="{{ toggleOrg }}" style="display: flex; align-items: center; gap: 8px; padding: 6px 12px; background: #ffffff; border: 1px solid #d8e0e8; border-radius: 2px; cursor: pointer; min-width: 110px;" style-hover="background:#f1f5f9;">
+            <div style="flex: 1; font-size: 12px; font-weight: 600; color: #1b2433;">{{ orgName }}</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #7c899a; margin-left: 2px;">{{ orgCaret }}</div>
+          </div>
+          <sc-if value="{{ orgOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position: absolute; top: calc(100% + 6px); left: 0; min-width: 200px; background: #ffffff; border: 1px solid #d8e0e8; border-radius: 3px; box-shadow: 0 8px 24px rgba(27,36,51,0.14); z-index: 40; overflow: hidden;">
+              <sc-for list="{{ orgOptions }}" as="og" hint-placeholder-count="3">
+                <div onClick="{{ og.onSelect }}" style="display: flex; align-items: center; justify-content: space-between; gap: 9px; padding: 9px 12px; cursor: pointer; border-bottom: 1px solid #eef2f6; background: {{ og.rowBg }};" style-hover="background:#f1f5f9;">
+                  <div style="font-size: 12px; font-weight: 600; color: #1b2433;">{{ og.name }}</div>
+                  <sc-if value="{{ og.active }}" hint-placeholder-val="{{ false }}"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2f5fd0;">&#10003;</div></sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <!-- WINDOW FILTER -->
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; color: #7c899a; text-transform: uppercase;">Window</span>
+          <div style="display: flex; gap: 2px; padding: 2px; background: #e6ebf1; border: 1px solid #d8e0e8; border-radius: 3px;">
+            <sc-for list="{{ intervalOptions }}" as="iv" hint-placeholder-count="3">
+              <div onClick="{{ iv.onSelect }}" style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 5px 14px; border-radius: 2px; cursor: pointer; background: {{ iv.bg }}; color: {{ iv.ink }};">{{ iv.label }}</div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #98a4b3;">{{ intervalNote }}</div>
+    </div>
+
+    <!-- ================= STAT TILES ================= -->
+    <div style="display: grid; grid-template-columns: 1.25fr 1fr 1fr 1fr 1fr; gap: 1px; background: #dbe2ea; border: 1px solid #dbe2ea; border-radius: 3px; margin: 12px 0 22px; overflow: hidden;">
+
+      <div onClick="{{ toggleClassifier }}" title="Click to preview the classifier-unreliable board state" style="background: #ffffff; padding: 16px 18px; cursor: pointer;" style-hover="background:#f1f5f9;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; color: #7c899a; text-transform: uppercase;">Classifier reproducibility</div>
+          <div style="font-size: 9px; color: #98a4b3; font-family: 'IBM Plex Mono', monospace;">gate</div>
+        </div>
+        <div style="display: flex; align-items: baseline; gap: 10px; margin-top: 10px;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 28px; font-weight: 600; color: {{ classifierInk }};">{{ classifierVal }}</div>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <div style="width: 7px; height: 7px; border-radius: 50%; background: {{ classifierInk }};"></div>
+            <div style="font-size: 11.5px; color: {{ classifierInk }}; font-weight: 600;">{{ classifierLabel }}</div>
+          </div>
+        </div>
+        <div style="font-size: 10.5px; color: #98a4b3; margin-top: 7px;">gates every per-leaf number below</div>
+      </div>
+
+      <div style="background: #ffffff; padding: 16px 18px;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; color: #7c899a; text-transform: uppercase;">Leaves measured</div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 28px; font-weight: 600; margin-top: 10px;">{{ measuredVal }}</div>
+        <div style="font-size: 10.5px; color: #98a4b3; margin-top: 7px;">{{ measuredNote }}</div>
+      </div>
+
+      <div onClick="{{ goAttention }}" style="background: #ffffff; padding: 16px 18px; cursor: pointer;" style-hover="background:#f1f5f9;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; color: #7c899a; text-transform: uppercase;">Needs attention</div>
+        <div style="display: flex; align-items: baseline; gap: 8px; margin-top: 10px;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 28px; font-weight: 600; color: #c43d2a;">{{ attentionVal }}</div>
+          <div style="font-size: 11px; color: #c43d2a;">leaves</div>
+        </div>
+        <div style="font-size: 10.5px; color: #98a4b3; margin-top: 7px;">sorted by severity, then stakes</div>
+      </div>
+
+      <div style="background: #ffffff; padding: 16px 18px;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; color: #7c899a; text-transform: uppercase;">New leaves · 7d</div>
+        <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-top: 10px;">
+          <div style="display: flex; align-items: baseline; gap: 6px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 28px; font-weight: 600;">{{ newLeavesVal }}</div>
+            <div style="font-size: 13px; color: #b06f12;">&#8593;</div>
+          </div>
+          <div style="display: flex; align-items: flex-end; gap: 2px; height: 26px;">
+            <sc-for list="{{ sparkBars }}" as="bar" hint-placeholder-count="7">
+              <div style="width: 5px; background: {{ bar.c }}; height: {{ bar.h }};"></div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="font-size: 10.5px; color: #98a4b3; margin-top: 7px;">{{ newLeavesNote }}</div>
+      </div>
+
+      <div style="background: #ffffff; padding: 16px 18px;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; color: #7c899a; text-transform: uppercase;">Open tripwires</div>
+        <div style="display: flex; align-items: baseline; gap: 8px; margin-top: 10px;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 28px; font-weight: 600; color: #b06f12;">{{ tripwiresVal }}</div>
+          <div style="font-size: 11px; color: #b06f12;">Tier 0</div>
+        </div>
+        <div style="font-size: 10.5px; color: #98a4b3; margin-top: 7px;">{{ tripwiresNote }}</div>
+      </div>
+    </div>
+
+    <!-- ================= SCREEN A BODY ================= -->
+    <sc-if value="{{ isFleet }}" hint-placeholder-val="{{ true }}">
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 22px; align-items: start;">
+
+      <!-- ----- INTERACTIVE CAPABILITY TREE ----- -->
+      <div>
+        <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #1b2433; font-weight: 600;">Interactive Capability Tree</div>
+          <div style="font-size: 10.5px; color: #7c899a;">expand / collapse lineage, click a node for rolled-up min &#183; med &#183; max</div>
+        </div>
+        <div style="border: 1px solid #dbe2ea; border-radius: 3px; overflow: hidden; background: #ffffff;">
+          <dc-import name="Capability Tree" hint-size="100%,860px"></dc-import>
+        </div>
+      </div>
+
+      <!-- ----- CAPABILITY TREE ----- -->
+      <div style="background: #ffffff; border: 1px solid #dbe2ea; border-radius: 3px; overflow: hidden;">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; border-bottom: 1px solid #e7edf3;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #1b2433; font-weight: 600;">Capability Tree</div>
+          <div style="font-size: 10.5px; color: #7c899a;">three-tuple per leaf · rollups are weakest-link</div>
+        </div>
+        <!-- column headers -->
+        <div style="display: grid; grid-template-columns: 1fr 78px 132px 86px 48px; gap: 8px; padding: 8px 18px; border-bottom: 1px solid #e7edf3; background: #f1f5f9; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.8px; text-transform: uppercase; color: #7c899a;">
+          <div>Leaf / Intent</div>
+          <div style="text-align: right;">T1 consist.</div>
+          <div style="text-align: right;">T2 drift</div>
+          <div style="text-align: right;">T3 violation</div>
+          <div style="text-align: right;">Trip</div>
+        </div>
+
+        <sc-for list="{{ treeRows }}" as="row" hint-placeholder-count="13">
+          <!-- LEVEL ROW -->
+          <sc-if value="{{ row.isLevel }}" hint-placeholder-val="{{ false }}">
+            <div onClick="{{ row.onToggle }}" style="display: flex; align-items: center; gap: 10px; padding: 10px 18px; border-bottom: 1px solid #eef2f6; cursor: pointer; background: #f3f7fb;" style-hover="background:#eaf0f6;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #7c899a; width: 10px;">{{ row.chevron }}</div>
+              <div style="width: 8px; height: 8px; border-radius: 50%; background: {{ row.dotInk }}; flex-shrink: 0;"></div>
+              <div style="font-size: 12.5px; font-weight: 600; color: #1b2433;">{{ row.name }}</div>
+              <div style="flex: 1;"></div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #4a5567;">{{ row.rollup }}</div>
+            </div>
+          </sc-if>
+          <!-- LEAF ROW -->
+          <sc-if value="{{ row.isLeaf }}" hint-placeholder-val="{{ false }}">
+            <div onClick="{{ row.onOpen }}" style="display: grid; grid-template-columns: 1fr 78px 132px 86px 48px; gap: 8px; align-items: center; padding: {{ rowPad }} 18px; border-bottom: 1px solid #eef2f6; cursor: pointer; border-left: 3px solid {{ row.stateInk }};" style-hover="background:#f1f5f9;">
+              <div style="display: flex; align-items: center; gap: 9px; padding-left: {{ row.indent }};">
+                <span style="opacity: {{ row.dim }}; font-size: 12.5px; font-weight: 500; color: #1b2433;">{{ row.name }}</span>
+                <sc-if value="{{ row.isNew }}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; letter-spacing: 0.5px; text-transform: uppercase; color: #6155d6; border: 1px solid #d8d4f3; border-radius: 2px; padding: 1px 4px;">new</span></sc-if>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; color: #98a4b3;">{{ row.traffic }}</span>
+              </div>
+              <div style="text-align: right; opacity: {{ row.dim }};">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: {{ row.t1ink }};">{{ row.t1disp }}</span>
+              </div>
+              <div style="text-align: right; opacity: {{ row.dim }};">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: {{ row.t2ink }};">{{ row.t2disp }}</span>
+              </div>
+              <div style="text-align: right; opacity: {{ row.dim }};">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 600; color: {{ row.t3ink }}; background: {{ row.t3bg }}; padding: 1px 6px; border-radius: 2px;">{{ row.t3disp }}</span>
+              </div>
+              <div style="text-align: right;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: {{ row.tripInk }};">{{ row.tripDisp }}</span>
+              </div>
+            </div>
+          </sc-if>
+        </sc-for>
+
+        <div style="display: flex; align-items: center; gap: 16px; padding: 9px 18px; background: #f1f5f9; font-size: 10px; color: #7c899a; font-family: 'IBM Plex Mono', monospace;">
+          <span>branches live inside leaf detail, never as nodes</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= BOTTOM ROW: COST + ATTENTION ================= -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: start; margin-top: 22px;">
+
+        <!-- COST ANALYSIS -->
+        <div style="background: #ffffff; border: 1px solid #dbe2ea; border-radius: 3px; overflow: hidden;">
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; border-bottom: 1px solid #e7edf3;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #1b2433; font-weight: 600;">Cost / intent</div>
+            <div style="font-size: 10px; color: #b06f12; font-family: 'IBM Plex Mono', monospace;">Tier 0 · tripwire</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 64px 64px 56px; gap: 6px; padding: 7px 18px; border-bottom: 1px solid #e7edf3; background: #f1f5f9; font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.6px; text-transform: uppercase; color: #7c899a;">
+            <div>Leaf</div><div style="text-align: right;">avg</div><div style="text-align: right;">expect</div><div style="text-align: right;">resid</div>
+          </div>
+          <sc-for list="{{ costRows }}" as="c" hint-placeholder-count="6">
+            <div onClick="{{ c.onOpen }}" style="display: grid; grid-template-columns: 1fr 64px 64px 56px; gap: 6px; align-items: center; padding: 8px 18px; border-bottom: 1px solid #eef2f6; cursor: pointer; background: {{ c.rowBg }};" style-hover="background:#f1f5f9;">
+              <div style="font-size: 11.5px; color: #1b2433; display: flex; align-items: center; gap: 6px;">{{ c.name }}<sc-if value="{{ c.flagged }}" hint-placeholder-val="{{ false }}"><span style="width: 6px; height: 6px; border-radius: 50%; background: #b06f12;"></span></sc-if></div>
+              <div style="text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4a5567;">{{ c.avg }}</div>
+              <div style="text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #98a4b3;">{{ c.expect }}</div>
+              <div style="text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: {{ c.residInk }};">{{ c.resid }}</div>
+            </div>
+          </sc-for>
+          <div style="padding: 9px 18px; background: #f1f5f9; font-size: 10px; color: #7c899a; line-height: 1.5;">Residual = cost minus expected-given-context. A high residual is the looping signal — distinct from a leaf that is just legitimately expensive.</div>
+        </div>
+
+        <!-- NEEDS ATTENTION -->
+        <div style="background: #ffffff; border: 1px solid #dbe2ea; border-radius: 3px; overflow: hidden;">
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; border-bottom: 1px solid #e7edf3;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #1b2433; font-weight: 600;">Where to look first</div>
+            <div style="font-size: 10px; color: #7c899a; font-family: 'IBM Plex Mono', monospace;">severity &#183; stakes</div>
+          </div>
+          <sc-for list="{{ attentionRows }}" as="a" hint-placeholder-count="4">
+            <div onClick="{{ a.onOpen }}" style="display: flex; gap: 12px; padding: 13px 18px; border-bottom: 1px solid #eef2f6; cursor: pointer; border-left: 3px solid {{ a.ink }};" style-hover="background:#f1f5f9;">
+              <div style="flex: 1;">
+                <div style="display: flex; align-items: center; gap: 9px;">
+                  <div style="font-size: 13px; font-weight: 600; color: #1b2433;">{{ a.name }}</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase; color: {{ a.ink }}; background: {{ a.bg }}; border: 1px solid {{ a.bd }}; border-radius: 2px; padding: 1.5px 6px;">{{ a.reason }}</div>
+                </div>
+                <div style="font-size: 11.5px; color: #4a5567; line-height: 1.5; margin-top: 5px;">{{ a.what }}</div>
+              </div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #bac4cf; align-self: center;">&#8594;</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ================= SCREEN B (leaf detail) ================= -->
+    <sc-if value="{{ isLeaf }}" hint-placeholder-val="{{ false }}">
+    <div style="padding: 2px 0;">
+
+      <!-- back + breadcrumb -->
+      <div style="display: flex; align-items: center; justify-content: space-between; margin: 6px 0 14px;">
+        <div onClick="{{ back }}" style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: {{ accent }};">
+          <span style="font-size: 13px;">&#8592;</span><span>Fleet overview</span>
+        </div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #7c899a;">{{ leafDetail.parentPath }} / <span style="color: #1b2433;">{{ leafDetail.name }}</span></div>
+      </div>
+
+      <!-- leaf switcher -->
+      <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px;">
+        <sc-for list="{{ leafNav }}" as="nav" hint-placeholder-count="11">
+          <div onClick="{{ nav.onOpen }}" style="display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 2px; cursor: pointer; font-size: 11px; border: 1px solid {{ nav.bd }}; background: {{ nav.navBg }}; color: {{ nav.navInk }};">
+            <span style="width: 6px; height: 6px; border-radius: 50%; background: {{ nav.ink }};"></span>{{ nav.name }}
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- ===== B1 HEADER ===== -->
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; background: #ffffff; border: 1px solid #dbe2ea; border-left: 4px solid {{ leafDetail.stateInk }}; border-radius: 3px; padding: 20px 22px; margin-bottom: 20px;">
+        <div>
+          <div style="font-size: 22px; font-weight: 700; color: #1b2433; letter-spacing: -0.2px;">{{ leafDetail.name }}</div>
+          <div style="display: flex; gap: 18px; margin-top: 10px; font-size: 11.5px; color: #4a5567;">
+            <span><span style="color: #7c899a;">traffic</span> &nbsp;<span style="font-family: 'IBM Plex Mono', monospace; color: #1b2433;">{{ leafDetail.traffic }}</span> / 7d &nbsp;<span style="color: #98a4b3;">{{ leafDetail.trafficCi }}</span></span>
+            <span><span style="color: #7c899a;">stakes</span> &nbsp;<span style="color: #b06f12; letter-spacing: 1px;">{{ leafDetail.stakesDisp }}</span></span>
+          </div>
+        </div>
+        <div style="text-align: right; flex-shrink: 0;">
+          <div style="display: inline-flex; align-items: center; gap: 7px; padding: 5px 12px; border-radius: 2px; background: {{ leafDetail.stateBg }}; border: 1px solid {{ leafDetail.stateBd }};">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: {{ leafDetail.stateInk }};"></span>
+            <span style="font-size: 11.5px; font-weight: 600; color: {{ leafDetail.stateInk }}; text-transform: uppercase; letter-spacing: 0.5px;">{{ leafDetail.stateLabel }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== B2 PATH VIEW (attribution before score) ===== -->
+      <div style="background: #ffffff; border: 1px solid #dbe2ea; border-radius: 3px; padding: 20px 22px; margin-bottom: 20px;">
+        <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600;">Tier 1 &#183; Path view</div>
+          <div style="font-size: 10.5px; color: #7c899a;">the path and the diff come before the number</div>
+        </div>
+
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.8px; text-transform: uppercase; color: #7c899a; margin-bottom: 10px;">Dominant skeleton</div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-bottom: 20px;">
+          <sc-for list="{{ leafDetail.skeleton }}" as="s" hint-placeholder-count="5">
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <div style="display: flex; flex-direction: column; gap: 3px; padding: 7px 11px; border-radius: 3px; border: 1px {{ s.borderStyle }} {{ s.color }}; background: {{ s.chipBg }}; opacity: {{ s.opacity }};">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 8px; letter-spacing: 0.5px; text-transform: uppercase; color: {{ s.color }};">{{ s.kind }}</span>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: #98a4b3;">{{ s.v }}</span>
+                </div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #1b2433; text-decoration: {{ s.strike }};">{{ s.label }}</div>
+              </div>
+              <span style="color: #bac4cf; font-family: 'IBM Plex Mono', monospace; font-size: 12px;">&#8594;</span>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ leafDetail.hasMissing }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; gap: 8px; padding: 9px 12px; background: #fbeae5; border: 1px solid #f2ccc2; border-radius: 3px; margin-bottom: 20px; font-size: 11.5px; color: #9a3422; line-height: 1.5;"><span style="font-weight: 600;">{{ leafDetail.missingNote }}</span></div>
+        </sc-if>
+
+        <!-- distribution -->
+        <sc-if value="{{ leafDetail.hasDist }}" hint-placeholder-val="{{ true }}">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.8px; text-transform: uppercase; color: #7c899a; margin-bottom: 12px;">Distribution over skeletons</div>
+          <div style="display: flex; flex-direction: column; gap: 9px; margin-bottom: 22px;">
+            <sc-for list="{{ leafDetail.dist }}" as="d" hint-placeholder-count="2">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 200px; font-size: 12px; color: #1b2433; flex-shrink: 0;">{{ d.label }}</div>
+                <div style="flex: 1; height: 16px; background: #eef2f6; border-radius: 2px; overflow: hidden;">
+                  <div style="height: 100%; width: {{ d.w }}; background: {{ d.ink }};"></div>
+                </div>
+                <div style="width: 56px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: #1b2433; flex-shrink: 0;">{{ d.shareDisp }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- consistency number (second) -->
+        <div style="display: flex; align-items: center; gap: 24px; padding: 16px 18px; background: #f1f5f9; border-radius: 3px;">
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.8px; text-transform: uppercase; color: #7c899a;">Consistency</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 34px; font-weight: 600; color: {{ leafDetail.stateInk }}; line-height: 1.1; margin-top: 4px;">{{ leafDetail.t1disp }}</div>
+          </div>
+          <div style="flex: 1; font-size: 11.5px; color: #4a5567; line-height: 1.55;">
+            <div><span style="color: #7c899a;">conditioned on</span> <span style="font-family: 'IBM Plex Mono', monospace; color: #1b2433;">{{ leafDetail.t1feature }}</span></div>
+            <sc-if value="{{ leafDetail.hasExplained }}" hint-placeholder-val="{{ false }}"><div style="margin-top: 3px;"><span style="color: #7c899a;">explained-variation</span> <span style="font-family: 'IBM Plex Mono', monospace; color: #0e8f63;">{{ leafDetail.t1explained }}</span> &#8212; the spread is world-state, not wobble</div></sc-if>
+            <div style="margin-top: 6px; color: #7c899a;">{{ leafDetail.t1framing }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== B3 THREE-TUPLE (three independent readouts) ===== -->
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 1.2px; text-transform: uppercase; color: #7c899a; margin-bottom: 10px;">Three structural signals &#183; measured independently, never averaged</div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 14px; align-items: start;">
+
+        <!-- T1 -->
+        <div style="background: #ffffff; border: 1px solid #dbe2ea; border-radius: 3px; padding: 16px 16px;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #1b2433; font-weight: 600;">Tier 1 &#183; Consistency</div>
+          <div style="font-size: 9px; color: #98a4b3; font-family: 'IBM Plex Mono', monospace; margin-top: 2px;">a concentration %, read as a flag</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 28px; font-weight: 600; color: {{ leafDetail.stateInk }}; margin: 14px 0 8px;">{{ leafDetail.t1disp }}</div>
+          <div style="font-size: 11px; color: #4a5567; line-height: 1.5;">Low can only mean <em>investigate</em>, never fail &#8212; it understates true consistency by unlogged world-state.</div>
+        </div>
+
+        <!-- T2 -->
+        <div style="background: #ffffff; border: 1px solid #dbe2ea; border-radius: 3px; padding: 16px 16px;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #1b2433; font-weight: 600;">Tier 2 &#183; Drift</div>
+          <div style="font-size: 9px; color: #98a4b3; font-family: 'IBM Plex Mono', monospace; margin-top: 2px;">the movement, not the level</div>
+          <sc-if value="{{ leafDetail.hasSeries }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; align-items: flex-end; gap: 6px; height: 92px; margin: 16px 0 6px; border-bottom: 1px solid #e7edf3;">
+              <sc-for list="{{ leafDetail.series }}" as="s" hint-placeholder-count="7">
+                <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; gap: 4px;">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: {{ s.ink }};">{{ s.v }}</span>
+                  <div style="width: 100%; background: {{ s.ink }}; border-radius: 1px 1px 0 0; height: {{ s.h }};"></div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <sc-for list="{{ leafDetail.series }}" as="s" hint-placeholder-count="7">
+                <div style="flex: 1; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 7.5px; color: #98a4b3;">{{ s.label }}</div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ leafDetail.hasEvent }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top: 10px; padding: 7px 9px; background: #fbeae5; border-left: 2px solid #c43d2a; font-size: 10px; color: #9a3422; line-height: 1.45;">{{ leafDetail.event }}</div>
+            </sc-if>
+          </sc-if>
+          <sc-if value="{{ leafDetail.noSeries }}" hint-placeholder-val="{{ false }}">
+            <div style="margin: 16px 0; font-size: 11px; color: #8590a0; line-height: 1.5;">No baseline yet &#8212; drift needs history this leaf doesn't have.</div>
+          </sc-if>
+        </div>
+
+        <!-- T3 -->
+        <div style="background: #ffffff; border: 1px solid #dbe2ea; border-radius: 3px; padding: 16px 16px;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #1b2433; font-weight: 600;">Tier 3 &#183; Invariants</div>
+          <div style="font-size: 9px; color: #98a4b3; font-family: 'IBM Plex Mono', monospace; margin-top: 2px;">a violation rate, trusted as a defect count</div>
+          <sc-if value="{{ leafDetail.hasPredicates }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">
+              <sc-for list="{{ leafDetail.predicates }}" as="p" hint-placeholder-count="1">
+                <div style="border: 1px solid {{ p.bd }}; background: {{ p.bg }}; border-radius: 3px; padding: 11px 12px;">
+                  <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+                    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: {{ p.ink }};">{{ p.rate }}</span>
+                    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: {{ p.ink }};">{{ p.trend }} {{ p.was }}</span>
+                  </div>
+                  <div style="font-size: 11px; color: #1b2433; line-height: 1.45; margin-top: 6px;">{{ p.text }}</div>
+                  <sc-if value="{{ p.money }}" hint-placeholder-val="{{ false }}">
+                    <div style="margin-top: 8px; font-size: 10px; color: #9a3422; line-height: 1.45; border-top: 1px solid #f2ccc2; padding-top: 7px;"><strong>Money quadrant.</strong> Consistent and violating &#8212; reliably does the wrong thing. Invisible to Tier 1 alone.</div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ leafDetail.noPredicates }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top: 14px; font-size: 11px; color: #8590a0; line-height: 1.5;">No invariant evaluated below the traffic floor.</div>
+          </sc-if>
+        </div>
+      </div>
+
+      <!-- ===== B4 TIER 0 COST / TRIPWIRE (distinct) ===== -->
+      <div style="background: #fbf6ec; border: 1px dashed #e0d3b3; border-radius: 3px; padding: 18px 20px; margin-bottom: 18px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px;">
+          <div style="display: flex; align-items: baseline; gap: 12px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; color: #92670f;">Tier 0 &#183; Cost / health tripwire</div>
+            <div style="font-size: 10.5px; color: #a28d62;">a smoke alarm, not a diagnosis &#183; kept out of the grid</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 28px; margin-bottom: 16px;">
+          <div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.6px; text-transform: uppercase; color: #a28d62;">avg cost</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; font-weight: 600; color: #1b2433; margin-top: 4px;">{{ leafDetail.costAvg }}</div></div>
+          <div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.6px; text-transform: uppercase; color: #a28d62;">expected (context)</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; font-weight: 600; color: #4a5567; margin-top: 4px;">{{ leafDetail.costExpected }}</div></div>
+          <div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.6px; text-transform: uppercase; color: #a28d62;">residual</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; font-weight: 600; color: {{ leafDetail.costResidInk }}; margin-top: 4px;">{{ leafDetail.costResid }}</div></div>
+        </div>
+
+        <sc-if value="{{ leafDetail.hasTrips }}" hint-placeholder-val="{{ false }}">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.8px; text-transform: uppercase; color: #a28d62; margin-bottom: 9px;">Flagged traces &#183; unexplained residual</div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <sc-for list="{{ leafDetail.traces }}" as="t" hint-placeholder-count="3">
+              <div style="display: flex; align-items: center; gap: 14px; padding: 10px 13px; background: #fdf6ea; border: 1px solid #ebe1cb; border-radius: 3px;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #92670f;">{{ t.id }}</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: #c43d2a;">{{ t.tokens }} tok</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4a5567;">{{ t.latency }}</span>
+                <span style="flex: 1; font-size: 11px; color: #4a5567;">{{ t.note }}</span>
+                <div onClick="{{ leafDetail.onReplay }}" style="cursor: pointer; font-size: 10.5px; font-weight: 600; color: #fff; background: {{ accent }}; padding: 6px 11px; border-radius: 2px; white-space: nowrap;">Run replay drill-down</div>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ leafDetail.replayShown }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top: 12px; padding: 12px 14px; background: #e6f5ee; border: 1px solid #bce4d2; border-radius: 3px;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.8px; text-transform: uppercase; color: #0e8f63; margin-bottom: 6px;">Replay result &#183; N=20</div>
+              <div style="font-size: 12px; color: #1b2433; line-height: 1.5;">Loop attributed to <span style="font-family: 'IBM Plex Mono', monospace; color: #1b2433;">{{ leafDetail.replayAttribution }}</span>. World-state fixed across runs &#8212; the variance is infrastructure, not model stochasticity.</div>
+            </div>
+          </sc-if>
+        </sc-if>
+        <sc-if value="{{ leafDetail.noTrips }}" hint-placeholder-val="{{ true }}">
+          <div style="font-size: 11.5px; color: #a28d62; line-height: 1.5;">No cost anomalies &#8212; every trace sits inside the expected-given-context band. The tripwire is armed but quiet.</div>
+        </sc-if>
+      </div>
+
+      <!-- ===== B5 SCOPE REMINDER ===== -->
+      <div style="display: flex; align-items: center; gap: 10px; padding: 11px 16px; background: #e6ebf1; border: 1px solid #d5dde6; border-radius: 3px; font-size: 11px; color: #4a5567; line-height: 1.5;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #7c899a;">scope</span>
+        <span>This leaf is measured for <strong style="color: #1b2433;">reliability</strong> &#8212; did it do the same thing, run its required steps, stay within cost norms. It is <em>not</em> measured for correctness.</span>
+      </div>
+
+    </div>
+    </sc-if>
+
+    <!-- ================= CAVEATS STRIP ================= -->
+    <sc-if value="{{ showCaveats }}" hint-placeholder-val="{{ true }}">
+    <div style="margin-top: 26px; padding: 16px 20px; background: #e6ebf1; border: 1px solid #d5dde6; border-radius: 3px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #7c899a; margin-bottom: 10px;">This dashboard admits its own limits</div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+        <sc-for list="{{ caveatList }}" as="cv" hint-placeholder-count="3">
+          <div style="display: flex; gap: 9px; font-size: 11px; color: #4a5567; line-height: 1.5;"><span style="color: #98a4b3; font-family: 'IBM Plex Mono', monospace;">{{ cv.n }}</span><span>{{ cv.t }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1500, &quot;height&quot;: 1000}, &quot;density&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;comfortable&quot;, &quot;compact&quot;], &quot;default&quot;: &quot;comfortable&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Display&quot;}, &quot;accent&quot;: {&quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#2f5fd0&quot;, &quot;options&quot;: [&quot;#2f5fd0&quot;, &quot;#475569&quot;, &quot;#6155d6&quot;, &quot;#0e8f63&quot;], &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Display&quot;}, &quot;showCaveats&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Display&quot;}}">
+class Component extends DCLogic {
+  state = { D: null, screen: 'fleet', leafId: 'refund_eligibility', collapsed: {}, classifierOk: true, replayShown: false, agentOpen: false, agentId: 'shopbot', interval: '7d', teamId: 'all', orgId: 'all', teamOpen: false, orgOpen: false };
+
+  async componentDidMount() {
+    const m = await import('./lineage-data.js');
+    this.setState({ D: m.default });
+  }
+
+  C(state) {
+    const map = {
+      green: { ink: '#0e8f63', bg: '#e6f5ee', bd: '#bce4d2' },
+      amber: { ink: '#b06f12', bg: '#fbf1de', bd: '#f0ddb6' },
+      red:   { ink: '#c43d2a', bg: '#fbeae5', bd: '#f2ccc2' },
+      gray:  { ink: '#8590a0', bg: '#eef2f6', bd: '#dde3ea' },
+      neutral: { ink: '#1b2433', bg: '#eef2f6', bd: '#dde3ea' },
+    };
+    return map[state] || map.neutral;
+  }
+
+  fmtPct(v) {
+    if (v === null || v === undefined) return '—';
+    return (Number.isInteger(v) ? v : v.toFixed(1)) + '%';
+  }
+  fmtNum(n) {
+    if (n === null || n === undefined) return '—';
+    return n.toLocaleString('en-US');
+  }
+  fmtTraffic(n) {
+    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+    return String(n);
+  }
+
+  rank(s) { return { green: 0, gray: 1, amber: 2, red: 3 }[s] || 0; }
+
+  worstChild(lvl, leaves) {
+    const kids = lvl.children.map(id => leaves[id]);
+    return kids.reduce((a, b) => {
+      if (this.rank(b.state) !== this.rank(a.state)) return this.rank(b.state) > this.rank(a.state) ? b : a;
+      // same severity: surface the worse invariant violation first (money quadrant), then lower consistency
+      if ((b.t3 ?? -1) !== (a.t3 ?? -1)) return (b.t3 ?? -1) > (a.t3 ?? -1) ? b : a;
+      return (b.t1 ?? 101) < (a.t1 ?? 101) ? b : a;
+    });
+  }
+
+  leafRow(lf, depth, classifierOk) {
+    const C = this.C;
+    const stateC = C.call(this, lf.state);
+    const t3tone = lf.t3 === null ? 'gray' : (lf.t3 >= 100 ? 'red' : (lf.t3 > 0 ? 'amber' : 'green'));
+    const t3C = C.call(this, t3tone);
+    const t2down = lf.t2 === 'down';
+    return {
+      isLeaf: true, isLevel: false, id: lf.id, name: lf.name, isNew: !!lf.isNew,
+      indent: (depth * 16) + 'px',
+      traffic: lf.t1 === null ? lf.traffic + '/7d' : this.fmtTraffic(lf.traffic),
+      stateInk: stateC.ink,
+      dim: classifierOk ? 1 : 0.42,
+      t1disp: this.fmtPct(lf.t1),
+      t1ink: lf.t1 === null ? '#8590a0' : '#1b2433',
+      t2disp: t2down ? '\u2193 ' + (lf.t2note || '') : (lf.t2 === null ? '—' : 'flat'),
+      t2ink: t2down ? '#c43d2a' : (lf.t2 === null ? '#8590a0' : '#7c899a'),
+      t3disp: this.fmtPct(lf.t3),
+      t3ink: t3C.ink, t3bg: lf.t3 > 0 || lf.t3 === null ? t3C.bg : 'transparent',
+      tripDisp: lf.trips > 0 ? String(lf.trips) : '\u00b7',
+      tripInk: lf.trips > 0 ? '#b06f12' : '#bac4cf',
+      onOpen: () => this.openLeaf(lf.id),
+    };
+  }
+
+  framingFor(lf) {
+    if (lf.reason === 'n_too_low') return 'Below the traffic floor — no trustworthy number, shown blank rather than faked.';
+    if (lf.reason === 'money_quadrant') return 'Reads more consistent than ever — that is the trap. The dropped step surfaces only in Tier 3.';
+    if (lf.reason === 'false_alarm') return 'Amber means investigate; here it resolves to a legitimate world-state branch, not wobble.';
+    if (lf.reason === 'drift') return 'A snapshot of 78% is shruggable — the Tier 2 movement is where the signal lives.';
+    if (lf.reason === 'cost_tripwire') return 'Structurally fine — the loop is invisible here and only the cost tripwire sees it.';
+    return 'Stable. The meter reads green, honestly.';
+  }
+
+  openLeaf(id) { this.setState({ screen: 'leaf', leafId: id, replayShown: false }); window.scrollTo(0, 0); }
+  back() { this.setState({ screen: 'fleet' }); window.scrollTo(0, 0); }
+  toggleLevel(id) { this.setState(s => ({ collapsed: { ...s.collapsed, [id]: !s.collapsed[id] } })); }
+  toggleClassifier() { this.setState(s => ({ classifierOk: !s.classifierOk })); }
+  runReplay() { this.setState({ replayShown: true }); }
+  toggleAgent() { this.setState(s => ({ agentOpen: !s.agentOpen, teamOpen: false, orgOpen: false })); }
+  selectAgent(id) { this.setState({ agentId: id, agentOpen: false }); }
+  toggleTeam() { this.setState(s => ({ teamOpen: !s.teamOpen, agentOpen: false, orgOpen: false })); }
+  selectTeam(id) { this.setState({ teamId: id, teamOpen: false }); }
+  toggleOrg() { this.setState(s => ({ orgOpen: !s.orgOpen, agentOpen: false, teamOpen: false })); }
+  selectOrg(id) { this.setState({ orgId: id, orgOpen: false }); }
+  selectInterval(key) { this.setState({ interval: key }); }
+
+  TEAMS() {
+    return [
+      { id: 'all', name: 'All teams' },
+      { id: 'support', name: 'Support' },
+      { id: 'billing', name: 'Billing' },
+      { id: 'platform', name: 'Platform' },
+    ];
+  }
+  ORGS() {
+    return [
+      { id: 'all', name: 'All orgs' },
+      { id: 'acme', name: 'Acme Retail' },
+      { id: 'globex', name: 'Globex Financial' },
+    ];
+  }
+
+  AGENTS() {
+    return [
+      { id: 'shopbot', name: 'ShopBot \u2014 Customer Service', meta: '11 leaves \u00b7 live', state: 'green' },
+      { id: 'billbot', name: 'BillingBot \u2014 Invoicing', meta: '6 leaves \u00b7 1 tripwire', state: 'amber' },
+      { id: 'triage', name: 'TriageBot \u2014 Support Router', meta: '4 leaves \u00b7 live', state: 'green' },
+      { id: 'docsbot', name: 'DocsBot \u2014 Knowledge Assistant', meta: 'warming up \u00b7 2d', state: 'gray' },
+    ];
+  }
+  INTERVALS() {
+    return {
+      '24h': { label: '24h', window: 'rolling 24 hours', note: 'rolling 24 hours \u00b7 6.1k traces' },
+      '7d':  { label: '7d',  window: 'rolling 7 days',   note: 'rolling 7 days \u00b7 41.2k traces' },
+      '30d': { label: '30d', window: 'rolling 30 days',  note: 'rolling 30 days \u00b7 178k traces' },
+    };
+  }
+
+  buildLeafDetail(id) {
+    const D = this.state.D, lf = D.leaves[id];
+    const C = this.C.bind(this);
+    const stateC = C(lf.state);
+    const kindColor = { skill: '#2f5fd0', api: '#475569', kb: '#6155d6', branch: '#b06f12', decision: '#c43d2a' };
+    const skeleton = (lf.skeleton || []).map(s => ({
+      label: s.label, v: s.v || '', kind: s.kind, missing: !!s.missing, note: s.note || '',
+      color: s.missing ? '#a7b1bd' : (kindColor[s.kind] || '#475569'),
+      borderStyle: s.missing ? 'dashed' : 'solid',
+      chipBg: s.missing ? '#eef2f6' : '#ffffff',
+      opacity: s.missing ? 0.7 : 1,
+      strike: s.missing ? 'line-through' : 'none',
+    }));
+    const missingStep = (lf.skeleton || []).find(s => s.missing);
+    const dist = (lf.dist || []).map((d, i) => ({
+      label: d.label, share: d.share, shareDisp: this.fmtPct(d.share), w: d.share + '%',
+      ink: i === 0 ? '#2f5fd0' : '#93a0b0',
+    }));
+    let series = null, seriesLabels = lf.seriesLabels || ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    if (lf.series) {
+      const evt = lf.event ? lf.event.at : -1;
+      series = lf.series.map((v, i) => ({
+        v, h: v + '%', label: seriesLabels[i] || '',
+        ink: i === evt ? '#c43d2a' : (lf.t2 === 'down' && i > evt ? '#d68b78' : '#93a3b5'),
+        isEvent: i === evt,
+      }));
+    }
+    const predicates = (lf.predicates || []).map(p => {
+      const tone = p.money ? 'red' : (p.rate >= 1 ? 'amber' : (p.rate > 0 ? 'neutral' : 'green'));
+      const pc = C(tone);
+      return {
+        text: p.text, rate: this.fmtPct(p.rate), ink: pc.ink, bg: pc.bg, bd: pc.bd,
+        money: !!p.money, was: p.was !== undefined ? 'was ' + this.fmtPct(p.was) : '',
+        trend: p.trend === 'up' ? '\u2191 rising' : (p.trend === 'down' ? '\u2193 falling' : 'flat'),
+      };
+    });
+    const cost = lf.cost || {};
+    const traces = (cost.traces || []).map(t => ({ id: t.id, tokens: this.fmtNum(t.tokens), latency: t.latency, note: t.note }));
+    const lvlName = lf.level || 'root';
+    return {
+      id: lf.id, name: lf.name, parentPath: 'ShopBot / ' + lvlName,
+      stateInk: stateC.ink, stateBg: stateC.bg, stateBd: stateC.bd, state: lf.state,
+      stateLabel: { green: 'all clear', amber: 'investigate', red: 'broken', gray: 'below floor' }[lf.state],
+      traffic: this.fmtNum(lf.traffic), trafficCi: lf.t1 === null ? 'below traffic floor' : '\u00b195% CI',
+      stakes: lf.stakes, stakesDisp: '\u2605'.repeat(lf.stakes) + '\u2606'.repeat(5 - lf.stakes),
+      skeleton, dist, hasDist: dist.length > 0,
+      hasMissing: !!missingStep,
+      missingNote: missingStep ? (missingStep.label + ' — ' + (missingStep.note || 'no longer in the path') + '. The path is cleaner, not safer.') : '',
+      t1disp: this.fmtPct(lf.t1), t1feature: lf.t1feature || '—',
+      t1explained: lf.t1explained ? lf.t1explained.toFixed(2) : null,
+      hasExplained: !!lf.t1explained,
+      t1framing: this.framingFor(lf),
+      series, hasSeries: !!series, noSeries: !series,
+      event: lf.event ? lf.event.label : null, hasEvent: !!lf.event,
+      t2note: lf.t2note || null,
+      predicates, hasPredicates: predicates.length > 0, noPredicates: predicates.length === 0,
+      cost, costExpected: this.fmtNum(cost.expected), costAvg: this.fmtNum(cost.avg),
+      costResid: cost.residual === null ? '—' : (cost.residual > 0 ? '+' : '') + this.fmtNum(cost.residual),
+      costResidInk: cost.residual > 200 ? '#c43d2a' : (cost.residual === null ? '#8590a0' : '#4a5567'),
+      baselineLatency: cost.baselineLatency || null,
+      traces, hasTrips: traces.length > 0, noTrips: traces.length === 0,
+      replayAttribution: lf.replayAttribution || null,
+      replayShown: this.state.replayShown,
+      onReplay: () => this.runReplay(),
+      callout: lf.callout || null, note: lf.note || null,
+      isMoneyQuadrant: lf.reason === 'money_quadrant',
+      isDrift: lf.reason === 'drift', isFalseAlarm: lf.reason === 'false_alarm',
+      isTripwire: lf.reason === 'cost_tripwire', nTooLow: lf.reason === 'n_too_low',
+    };
+  }
+
+  renderVals() {
+    const D = this.state.D;
+    const accent = this.props.accent ?? '#2f5fd0';
+    const density = this.props.density ?? 'comfortable';
+    const showCaveats = this.props.showCaveats ?? true;
+    const rowPad = density === 'compact' ? '7px' : '11px';
+    const agents = this.AGENTS();
+    const curAgent = agents.find(a => a.id === this.state.agentId) || agents[0];
+    const agentOptions = agents.map(a => {
+      const c = this.C(a.state), active = a.id === this.state.agentId;
+      return { id: a.id, name: a.name, meta: a.meta, dot: c.ink, active,
+        rowBg: active ? c.bg : '#ffffff', onSelect: () => this.selectAgent(a.id) };
+    });
+    const teams = this.TEAMS();
+    const curTeam = teams.find(t => t.id === this.state.teamId) || teams[0];
+    const teamOptions = teams.map(t => {
+      const active = t.id === this.state.teamId;
+      return { id: t.id, name: t.name, active, rowBg: active ? '#eef2f6' : '#ffffff', onSelect: () => this.selectTeam(t.id) };
+    });
+    const orgs = this.ORGS();
+    const curOrg = orgs.find(o => o.id === this.state.orgId) || orgs[0];
+    const orgOptions = orgs.map(o => {
+      const active = o.id === this.state.orgId;
+      return { id: o.id, name: o.name, active, rowBg: active ? '#eef2f6' : '#ffffff', onSelect: () => this.selectOrg(o.id) };
+    });
+    const intervals = this.INTERVALS();
+    const curIv = intervals[this.state.interval] || intervals['7d'];
+    const intervalOptions = Object.keys(intervals).map(k => {
+      const active = k === this.state.interval;
+      return { key: k, label: intervals[k].label, bg: active ? '#2f5fd0' : 'transparent',
+        ink: active ? '#ffffff' : '#4a5567', onSelect: () => this.selectInterval(k) };
+    });
+
+    const base = {
+      ready: !!D, accent, rowPad, showCaveats,
+      isFleet: this.state.screen === 'fleet', isLeaf: this.state.screen === 'leaf',
+      classifierBad: !this.state.classifierOk,
+      toggleClassifier: () => this.toggleClassifier(),
+      goAttention: () => {}, back: () => this.back(),
+      agentOpen: this.state.agentOpen, toggleAgent: () => this.toggleAgent(),
+      agentName: curAgent.name, agentDot: this.C(curAgent.state).ink,
+      agentCaret: this.state.agentOpen ? '\u25b4' : '\u25be', agentOptions,
+      teamOpen: this.state.teamOpen, toggleTeam: () => this.toggleTeam(),
+      teamName: curTeam.name, teamCaret: this.state.teamOpen ? '\u25b4' : '\u25be', teamOptions,
+      orgOpen: this.state.orgOpen, toggleOrg: () => this.toggleOrg(),
+      orgName: curOrg.name, orgCaret: this.state.orgOpen ? '\u25b4' : '\u25be', orgOptions,
+      windowLabel: curIv.window, intervalOptions, intervalNote: curIv.note,
+    };
+    if (!D) return { ...base, tagline: '', classifierVal: '—', classifierLabel: '', classifierInk: '#0e8f63', measuredVal: '—', measuredNote: '', attentionVal: '—', newLeavesVal: '—', newLeavesNote: '', tripwiresVal: '—', tripwiresNote: '', treeRows: [], costRows: [], attentionRows: [], caveatList: [], sparkBars: [], leafDetail: null };
+
+    const ok = this.state.classifierOk;
+    const hs = D.headerStats;
+
+    // tree rows
+    const rows = [];
+    D.levels.forEach(lvl => {
+      const collapsed = !!this.state.collapsed[lvl.id];
+      const w = this.worstChild(lvl, D.leaves);
+      const wc = this.C(w.state);
+      rows.push({
+        isLevel: true, isLeaf: false, id: lvl.id, name: lvl.name,
+        chevron: collapsed ? '\u25b8' : '\u25be', dotInk: wc.ink,
+        rollup: 'worst \u00b7 ' + w.name + ' \u00b7 ' + this.fmtPct(w.t1) + ' / viol ' + this.fmtPct(w.t3),
+        onToggle: () => this.toggleLevel(lvl.id),
+      });
+      if (!collapsed) lvl.children.forEach(cid => rows.push(this.leafRow(D.leaves[cid], 1, ok)));
+    });
+    D.topLeaves.forEach(id => rows.push(this.leafRow(D.leaves[id], 0, ok)));
+
+    // cost rows
+    const costIds = ['escalation', 'refund_processing', 'refund_eligibility', 'delivery_status', 'password_reset', 'availability'];
+    const costRows = costIds.map(id => {
+      const lf = D.leaves[id], c = lf.cost;
+      const flagged = (c.residual ?? 0) > 200;
+      return {
+        name: lf.name, avg: this.fmtNum(c.avg), expect: this.fmtNum(c.expected),
+        resid: c.residual === null ? '—' : (c.residual > 0 ? '+' : '') + this.fmtNum(c.residual),
+        residInk: flagged ? '#c43d2a' : (c.residual === null ? '#8590a0' : '#4a5567'),
+        flagged, rowBg: flagged ? '#fbf3e6' : 'transparent',
+        onOpen: () => this.openLeaf(id),
+      };
+    });
+
+    // attention rows
+    const attentionRows = D.attention.map(a => {
+      const lf = D.leaves[a.id], c = this.C(a.tag);
+      return { name: lf.name, reason: a.reason, what: a.what, ink: c.ink, bg: c.bg, bd: c.bd, onOpen: () => this.openLeaf(a.id) };
+    });
+
+    // spark
+    const sparkBars = hs.newLeaves.spark.map(v => ({ h: v ? '100%' : '34%', c: v ? '#b06f12' : '#dbe2ea' }));
+
+    // leaf switcher nav (all leaves, in tree order)
+    const navIds = [];
+    D.levels.forEach(l => l.children.forEach(c => navIds.push(c)));
+    D.topLeaves.forEach(id => navIds.push(id));
+    const leafNav = navIds.map(id => {
+      const lf = D.leaves[id], c = this.C(lf.state);
+      const active = id === this.state.leafId;
+      return {
+        id, name: lf.name, active, ink: c.ink, bg: c.bg,
+        bd: active ? c.bd : '#e7edf3',
+        navBg: active ? c.bg : '#ffffff',
+        navInk: active ? c.ink : '#4a5567',
+        onOpen: () => this.openLeaf(id),
+      };
+    });
+
+    return {
+      ...base,
+      tagline: D.meta.tagline,
+      classifierVal: (ok ? hs.classifier.value : 84.0).toFixed(1) + '%',
+      classifierLabel: ok ? 'trustworthy' : 'unreliable',
+      classifierInk: ok ? '#0e8f63' : '#b06f12',
+      measuredVal: hs.measured.above + ' / ' + hs.measured.total, measuredNote: hs.measured.note,
+      attentionVal: hs.attention,
+      newLeavesVal: hs.newLeaves.count, newLeavesNote: hs.newLeaves.names,
+      tripwiresVal: hs.tripwires.count, tripwiresNote: hs.tripwires.where,
+      sparkBars,
+      treeRows: rows, costRows, attentionRows, leafNav,
+      caveatList: D.caveats.map((t, i) => ({ n: 'C' + (i + 1), t })),
+      leafDetail: this.buildLeafDetail(this.state.leafId),
+    };
+  }
+}
+</script>
+</body>
+</html>

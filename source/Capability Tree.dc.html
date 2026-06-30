@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #eceff4; font-family: 'IBM Plex Sans', sans-serif; color: #1b2433; -webkit-font-smoothing: antialiased; padding-bottom: 60px;">
+
+  <!-- ===== TOP BAR ===== -->
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; border-bottom: 1px solid #d8e0e8; background: #f3f7fb;">
+    <div style="display: flex; align-items: baseline; gap: 16px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 14px; letter-spacing: 2.5px;">CAPABILITY&nbsp;TREE</div>
+      <div style="font-size: 12px; color: #7c899a;">expand to drill down &#183; every node aggregates its leaves as min &#183; median &#183; max</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 18px;">
+      <div style="display: flex; gap: 16px;">
+        <sc-for list="{{ stateLegend }}" as="s" hint-placeholder-count="4">
+          <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; color: #4a5567;"><span style="width: 8px; height: 8px; border-radius: 2px; background: {{ s.c }};"></span>{{ s.label }}</div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TREE SCREEN ================= -->
+  <sc-if value="{{ isTree }}" hint-placeholder-val="{{ true }}">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 22px 32px 0;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
+      <div style="font-size: 12.5px; color: #4a5567; line-height: 1.5; max-width: 680px;">Showing <strong style="color:#1b2433;">agent</strong> and its <strong style="color:#1b2433;">capabilities</strong>. Use the <span style="font-family:'IBM Plex Mono',monospace;">&#9656;</span> chevron to reveal deeper levels; click a node to read its rolled-up metrics.</div>
+      <div style="display: flex; gap: 8px;">
+        <div onClick="{{ expandAll }}" style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #4a5567; background: #fff; border: 1px solid #d8e0e8; border-radius: 3px; padding: 6px 12px; cursor: pointer;" style-hover="background:#f1f5f9;">Expand all</div>
+        <div onClick="{{ collapseAll }}" style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #4a5567; background: #fff; border: 1px solid #d8e0e8; border-radius: 3px; padding: 6px 12px; cursor: pointer;" style-hover="background:#f1f5f9;">Collapse all</div>
+      </div>
+    </div>
+
+    <div style="position: relative; width: 100%; overflow-x: auto; background: #fff; border: 1px solid #dbe2ea; border-radius: 4px; padding: 24px;">
+      <div style="position: relative; width: {{ treeW }}px; height: {{ treeH }}px;">
+        <svg width="{{ treeW }}" height="{{ treeH }}" viewBox="0 0 {{ treeW }} {{ treeH }}" style="position: absolute; top: 0; left: 0; z-index: 1; overflow: visible;">
+          <sc-for list="{{ links }}" as="ln" hint-placeholder-count="5"><path d="{{ ln.d }}" fill="none" stroke="{{ ln.stroke }}" stroke-width="1.6" stroke-opacity="0.45"></path></sc-for>
+        </svg>
+        <sc-for list="{{ nodes }}" as="n" hint-placeholder-count="6">
+          <div style="position: absolute; left: {{ n.x }}px; top: {{ n.rowTop }}px; width: 232px; background: #ffffff; border: 1px solid #e7edf3; border-left: 3px solid {{ n.ink }}; border-radius: 4px; box-shadow: 0 1px 3px rgba(27,36,51,0.06); z-index: 2;">
+            <div onClick="{{ n.onHeader }}" style="height: 38px; display: flex; align-items: center; gap: 7px; padding: 0 8px 0 11px; cursor: pointer;">
+              <div style="width: 8px; height: 8px; border-radius: 50%; background: {{ n.ink }}; flex-shrink: 0;"></div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-size: 11.5px; font-weight: 600; color: #1b2433; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ n.name }}</div>
+              </div>
+              <sc-if value="{{ n.isLeaf }}" hint-placeholder-val="{{ false }}">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; color: #7c899a; flex-shrink: 0;">{{ n.sub }}</div>
+              </sc-if>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: {{ n.infoInk }}; flex-shrink: 0;">{{ n.infoIcon }}</div>
+              <sc-if value="{{ n.hasChildren }}" hint-placeholder-val="{{ true }}">
+                <div style="display: flex; gap: 4px; flex-shrink: 0; margin-left: 3px;">
+                  <div onClick="{{ n.onChevron }}" title="Expand one level" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 5px; border: 1px solid #d8e0e8; background: #ffffff; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5a6c84;" style-hover="background:#f1f5f9; border-color:#c3d0de;">{{ n.chevron }}</div>
+                  <div onClick="{{ n.onExpandAll }}" title="Expand full lineage to leaves" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 5px; border: 1px solid #bcd3f7; background: #eaf1fe; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: -1px; color: #2f5fd0;" style-hover="background:#dbe8fd; border-color:#9cbef3;">{{ n.expandAllIcon }}</div>
+                </div>
+              </sc-if>
+            </div>
+            <sc-if value="{{ n.infoOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="border-top: 1px solid #eef2f6; padding: 11px 11px 12px;">
+                <sc-for list="{{ n.metrics }}" as="m" hint-placeholder-count="3">
+                  <div style="height: 30px; margin-bottom: 2px;">
+                    <div style="display: flex; justify-content: space-between; align-items: baseline; height: 13px;">
+                      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; letter-spacing: 0.4px; text-transform: uppercase; color: #7c899a;">{{ m.label }}</span>
+                      <sc-if value="{{ m.isNull }}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; color: #98a4b3;">&#8212; below floor</span></sc-if>
+                      <sc-if value="{{ m.showSingle }}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; color: {{ m.ink }};">{{ m.single }}</span></sc-if>
+                      <sc-if value="{{ m.showRange }}" hint-placeholder-val="{{ true }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #4a5567;">{{ m.min }} &#183; <strong style="color:{{ m.ink }};">{{ m.med }}</strong> &#183; {{ m.max }}</span></sc-if>
+                    </div>
+                    <sc-if value="{{ m.hasBar }}" hint-placeholder-val="{{ true }}">
+                      <div style="position: relative; height: 6px; margin-top: 5px; background: #eef2f6; border-radius: 3px;">
+                        <div style="position: absolute; left: {{ m.fillLeft }}; width: {{ m.fillWidth }}; top: 0; height: 6px; background: {{ m.ink }}; opacity: 0.32; border-radius: 3px;"></div>
+                        <div style="position: absolute; left: {{ m.medLeft }}; top: -2px; width: 2px; height: 10px; background: {{ m.ink }}; border-radius: 1px; transform: translateX(-1px);"></div>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+                <sc-if value="{{ n.isLeaf }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ n.onDetail }}" style="margin-top: 9px; text-align: center; font-size: 10.5px; font-weight: 600; color: #fff; background: #2f5fd0; padding: 8px; border-radius: 3px; cursor: pointer;" style-hover="background:#2550b8;">Open full detail &#8594;</div>
+                </sc-if>
+                <sc-if value="{{ n.isGroup }}" hint-placeholder-val="{{ true }}">
+                  <div style="margin-top: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; color: #98a4b3;">rolled up across {{ n.leafCount }} leaves</div>
+                </sc-if>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ================= DETAIL SCREEN (leaf only) ================= -->
+  <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+  <div style="max-width: 1100px; margin: 0 auto; padding: 22px 32px 0;">
+    <div onClick="{{ back }}" style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #2f5fd0; margin-bottom: 16px;">
+      <span style="font-size: 13px;">&#8592;</span><span>Capability tree</span>
+    </div>
+
+    <!-- header -->
+    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; background: #fff; border: 1px solid #dbe2ea; border-left: 4px solid {{ d.stateInk }}; border-radius: 4px; padding: 20px 22px; margin-bottom: 18px;">
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #98a4b3; margin-bottom: 6px;">{{ d.path }}</div>
+        <div style="font-size: 22px; font-weight: 700; letter-spacing: -0.2px;">{{ d.name }}</div>
+        <div style="display: flex; gap: 18px; margin-top: 10px; font-size: 11.5px; color: #4a5567;">
+          <span><span style="color: #98a4b3;">traffic</span> &nbsp;<span style="font-family:'IBM Plex Mono',monospace;">{{ d.traffic }}</span> / 7d</span>
+          <span><span style="color: #98a4b3;">stakes</span> &nbsp;<span style="color: #b06f12; letter-spacing: 1px;">{{ d.stakesDisp }}</span></span>
+        </div>
+      </div>
+      <div style="display: inline-flex; align-items: center; gap: 7px; padding: 5px 12px; border-radius: 2px; background: {{ d.stateBg }}; border: 1px solid {{ d.stateBd }}; flex-shrink: 0;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: {{ d.stateInk }};"></span>
+        <span style="font-size: 11.5px; font-weight: 600; color: {{ d.stateInk }}; text-transform: uppercase; letter-spacing: 0.5px;">{{ d.stateLabel }}</span>
+      </div>
+    </div>
+
+    <!-- path skeleton -->
+    <div style="background: #fff; border: 1px solid #dbe2ea; border-radius: 4px; padding: 18px 20px; margin-bottom: 18px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.8px; text-transform: uppercase; color: #7c899a; margin-bottom: 12px;">Dominant intent skeleton</div>
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px;">
+        <sc-for list="{{ d.skeleton }}" as="s" hint-placeholder-count="5">
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <div style="display: flex; flex-direction: column; gap: 3px; padding: 7px 11px; border-radius: 3px; border: 1px {{ s.borderStyle }} {{ s.color }}; background: {{ s.chipBg }}; opacity: {{ s.opacity }};">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 8px; letter-spacing: 0.5px; text-transform: uppercase; color: {{ s.color }};">{{ s.kind }}</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #1b2433; text-decoration: {{ s.strike }};">{{ s.label }}</span>
+            </div>
+            <span style="color: #bac4cf; font-family: 'IBM Plex Mono', monospace; font-size: 12px;">&#8594;</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- three tiers -->
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 1.2px; text-transform: uppercase; color: #7c899a; margin-bottom: 10px;">Three structural signals &#183; measured independently</div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px; align-items: start;">
+      <div style="background: #fff; border: 1px solid #dbe2ea; border-radius: 4px; padding: 16px;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; font-weight: 600;">Tier 1 &#183; Consistency</div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 28px; font-weight: 600; color: {{ d.stateInk }}; margin: 12px 0 8px;">{{ d.t1disp }}</div>
+        <div style="font-size: 11px; color: #4a5567; line-height: 1.5;"><span style="color:#98a4b3;">conditioned on</span> <span style="font-family:'IBM Plex Mono',monospace; color:#1b2433;">{{ d.t1feature }}</span></div>
+        <div style="font-size: 11px; color: #4a5567; line-height: 1.5; margin-top: 6px;">{{ d.t1framing }}</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #dbe2ea; border-radius: 4px; padding: 16px;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; font-weight: 600;">Tier 2 &#183; Drift</div>
+        <sc-if value="{{ d.hasSeries }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; align-items: flex-end; gap: 6px; height: 84px; margin: 14px 0 6px; border-bottom: 1px solid #e7edf3;">
+            <sc-for list="{{ d.series }}" as="s" hint-placeholder-count="7">
+              <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; gap: 4px;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: {{ s.ink }};">{{ s.v }}</span>
+                <div style="width: 100%; background: {{ s.ink }}; border-radius: 1px 1px 0 0; height: {{ s.h }};"></div>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ d.hasEvent }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top: 10px; padding: 7px 9px; background: #fbeae5; border-left: 2px solid #c43d2a; font-size: 10px; color: #9a3422; line-height: 1.45;">{{ d.event }}</div>
+          </sc-if>
+        </sc-if>
+        <sc-if value="{{ d.noSeries }}" hint-placeholder-val="{{ false }}">
+          <div style="margin: 16px 0; font-size: 11px; color: #8590a0; line-height: 1.5;">No baseline yet &#8212; drift needs history this leaf doesn&#39;t have.</div>
+        </sc-if>
+      </div>
+      <div style="background: #fff; border: 1px solid #dbe2ea; border-radius: 4px; padding: 16px;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; font-weight: 600;">Tier 3 &#183; Invariants</div>
+        <sc-if value="{{ d.hasPredicates }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">
+            <sc-for list="{{ d.predicates }}" as="p" hint-placeholder-count="1">
+              <div style="border: 1px solid {{ p.bd }}; background: {{ p.bg }}; border-radius: 3px; padding: 11px 12px;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: {{ p.ink }};">{{ p.rate }}</span>
+                <div style="font-size: 11px; color: #1b2433; line-height: 1.45; margin-top: 6px;">{{ p.text }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ d.noPredicates }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top: 14px; font-size: 11px; color: #8590a0; line-height: 1.5;">No invariant evaluated below the traffic floor.</div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- tier 0 cost -->
+    <div style="background: #fbf6ec; border: 1px dashed #e0d3b3; border-radius: 4px; padding: 18px 20px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; color: #92670f; margin-bottom: 14px;">Tier 0 &#183; Cost / health tripwire</div>
+      <div style="display: flex; gap: 28px; margin-bottom: 12px;">
+        <div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; text-transform: uppercase; color: #a28d62;">avg cost</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; font-weight: 600; margin-top: 4px;">{{ d.costAvg }}</div></div>
+        <div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; text-transform: uppercase; color: #a28d62;">expected</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; font-weight: 600; color: #4a5567; margin-top: 4px;">{{ d.costExpected }}</div></div>
+        <div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; text-transform: uppercase; color: #a28d62;">residual</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; font-weight: 600; color: {{ d.costResidInk }}; margin-top: 4px;">{{ d.costResid }}</div></div>
+      </div>
+      <sc-if value="{{ d.noTrips }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size: 11.5px; color: #a28d62; line-height: 1.5;">No cost anomalies &#8212; every trace sits inside the expected-given-context band.</div>
+      </sc-if>
+      <sc-if value="{{ d.hasTrips }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <sc-for list="{{ d.traces }}" as="t" hint-placeholder-count="3">
+            <div style="display: flex; align-items: center; gap: 14px; padding: 10px 13px; background: #fdf6ea; border: 1px solid #ebe1cb; border-radius: 3px;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #92670f;">{{ t.id }}</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: #c43d2a;">{{ t.tokens }} tok</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4a5567;">{{ t.latency }}</span>
+              <span style="flex: 1; font-size: 11px; color: #4a5567;">{{ t.note }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { D: null, screen: 'tree', detailLeaf: null, expanded: { shopbot: true }, info: {} };
+
+  async componentDidMount() {
+    const m = await import('./lineage-data.js');
+    this.setState({ D: m.default });
+  }
+
+  col(s) {
+    const m = {
+      green: { ink: '#0e8f63', bg: '#e6f5ee', bd: '#bce4d2' },
+      amber: { ink: '#b06f12', bg: '#fbf1de', bd: '#f0ddb6' },
+      red:   { ink: '#c43d2a', bg: '#fbeae5', bd: '#f2ccc2' },
+      gray:  { ink: '#8590a0', bg: '#eef2f6', bd: '#dde3ea' },
+    };
+    return m[s] || m.gray;
+  }
+  rank(s) { return { green: 0, gray: 1, amber: 2, red: 3 }[s] || 0; }
+
+  tree() {
+    const D = this.state.D;
+    const leaf = id => ({ id, name: D.leaves[id].name, leaf: true, ref: D.leaves[id] });
+    const grp = (id, name, children) => ({ id, name, children });
+    return grp('shopbot', 'ShopBot \u2014 Customer Service', [
+      grp('order_status', 'Order Status', [leaf('delivery_status'), leaf('return_status'), leaf('cancellation_status')]),
+      grp('refunds', 'Refunds', [
+        leaf('refund_eligibility'),
+        grp('refund_ops', 'Refund Operations', [leaf('refund_processing')]),
+      ]),
+      grp('product_inquiry', 'Product Inquiry', [leaf('availability'), leaf('specifications')]),
+      grp('account_management', 'Account Management', [
+        grp('authentication', 'Authentication', [leaf('password_reset'), leaf('address_change')]),
+      ]),
+      grp('escalation_grp', 'Escalation', [leaf('escalation')]),
+    ]);
+  }
+
+  collectLeaves(node) {
+    if (node.leaf) return [node.ref];
+    let out = [];
+    (node.children || []).forEach(c => out = out.concat(this.collectLeaves(c)));
+    return out;
+  }
+  nodeState(node) {
+    return this.collectLeaves(node).map(l => l.state).reduce((a, b) => this.rank(b) > this.rank(a) ? b : a, 'green');
+  }
+  allGroupIds(node, acc) {
+    if (!node.leaf) { acc.push(node.id); (node.children || []).forEach(c => this.allGroupIds(c, acc)); }
+    return acc;
+  }
+
+  stat(vals) {
+    if (!vals.length) return null;
+    const a = [...vals].sort((x, y) => x - y);
+    const med = a.length % 2 ? a[(a.length - 1) / 2] : (a[a.length / 2 - 1] + a[a.length / 2]) / 2;
+    return { min: a[0], max: a[a.length - 1], med };
+  }
+  seriesRange(ref) { return (ref.series && ref.series.length) ? Math.max(...ref.series) - Math.min(...ref.series) : null; }
+  fmtMetric(v, unit) {
+    if (unit === 'pts') return v.toFixed(1).replace(/\.0$/, '');
+    return (Number.isInteger(v) ? v : v.toFixed(1)) + '%';
+  }
+  bar(label, s, lo, hi, unit, sev, isLeaf) {
+    if (!s) return { label, isNull: true, hasBar: false, showSingle: false, showRange: false };
+    const norm = v => Math.max(0, Math.min(100, (v - lo) / (hi - lo) * 100));
+    const c = this.col(sev(s.med));
+    return {
+      label, isNull: false, hasBar: true, showSingle: !!isLeaf, showRange: !isLeaf, ink: c.ink,
+      fillLeft: norm(s.min) + '%', fillWidth: Math.max(2, norm(s.max) - norm(s.min)) + '%', medLeft: norm(s.med) + '%',
+      min: this.fmtMetric(s.min, unit), med: this.fmtMetric(s.med, unit), max: this.fmtMetric(s.max, unit), single: this.fmtMetric(s.med, unit),
+    };
+  }
+  metricsFor(node, isLeaf) {
+    const leaves = this.collectLeaves(node);
+    const t1 = this.stat(leaves.map(l => l.t1).filter(v => v != null));
+    const t2 = this.stat(leaves.map(l => this.seriesRange(l)).filter(v => v != null));
+    const t3 = this.stat(leaves.map(l => l.t3).filter(v => v != null));
+    return [
+      this.bar('T1 Consistency', t1, 0, 100, '%', v => v >= 90 ? 'green' : v >= 80 ? 'amber' : 'red', isLeaf),
+      this.bar('T2 Drift', t2, 0, 20, 'pts', v => v <= 2 ? 'green' : v <= 8 ? 'amber' : 'red', isLeaf),
+      this.bar('T3 Violation', t3, 0, 5, '%', v => v === 0 ? 'green' : v < 1 ? 'amber' : 'red', isLeaf),
+    ];
+  }
+
+  toggleExpand(id) { this.setState(s => ({ expanded: { ...s.expanded, [id]: !s.expanded[id] } })); }
+  findNode(node, id) { if (node.id === id) return node; for (const c of (node.children || [])) { const r = this.findNode(c, id); if (r) return r; } return null; }
+  expandSubtree(id) {
+    const node = this.findNode(this.tree(), id);
+    const ids = node ? this.allGroupIds(node, []) : [];
+    this.setState(s => { const e = { ...s.expanded }; ids.forEach(i => e[i] = true); return { expanded: e }; });
+  }
+  toggleInfo(id) { this.setState(s => ({ info: { ...s.info, [id]: !s.info[id] } })); }
+  openDetail(id) { this.setState({ screen: 'detail', detailLeaf: id }); window.scrollTo(0, 0); }
+  back() { this.setState({ screen: 'tree' }); window.scrollTo(0, 0); }
+  expandAll() { this.setState({ expanded: this.allGroupIds(this.tree(), []).reduce((o, id) => (o[id] = true, o), {}) }); }
+  collapseAll() { this.setState({ expanded: { shopbot: true } }); }
+
+  fmtNum(n) { return (n == null) ? '\u2014' : n.toLocaleString('en-US'); }
+  fmtTraffic(n) { return n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : String(n); }
+  fmtPct(v) { return (v == null) ? '\u2014' : (Number.isInteger(v) ? v : v.toFixed(1)) + '%'; }
+  framingFor(lf) {
+    if (lf.reason === 'n_too_low') return 'Below the traffic floor \u2014 no trustworthy number, shown blank rather than faked.';
+    if (lf.reason === 'money_quadrant') return 'Reads more consistent than ever \u2014 that is the trap. The dropped step surfaces only in Tier 3.';
+    if (lf.reason === 'false_alarm') return 'Amber means investigate; here it resolves to a legitimate world-state branch, not wobble.';
+    if (lf.reason === 'drift') return 'A snapshot of 78% is shruggable \u2014 the Tier 2 movement is where the signal lives.';
+    if (lf.reason === 'cost_tripwire') return 'Structurally fine \u2014 the loop is invisible here and only the cost tripwire sees it.';
+    return 'Stable. The meter reads green, honestly.';
+  }
+
+  DRAWER_GROUP = 128;
+  DRAWER_LEAF = 158;
+
+  layout() {
+    const baseH = 38, rowGap = 12, colW = 268, nodeW = 232;
+    const nodes = [], links = [];
+    let cursor = 0;
+    const walk = (node, depth, parentAnchor) => {
+      const x = depth * colW;
+      const rowTop = cursor;
+      const isLeaf = !!node.leaf;
+      const open = !!this.state.info[node.id];
+      const drawer = open ? (isLeaf ? this.DRAWER_LEAF : this.DRAWER_GROUP) : 0;
+      const h = baseH + drawer;
+      const cy = rowTop + baseH / 2;
+      const state = this.nodeState(node);
+      const ink = this.col(state).ink;
+      const hasChildren = !isLeaf && node.children && node.children.length > 0;
+      const expanded = !!this.state.expanded[node.id];
+      const leafCount = this.collectLeaves(node).length;
+      nodes.push({
+        id: node.id, name: node.name, x, rowTop, cy, ink,
+        hasChildren, noChildren: !hasChildren, chevron: expanded ? '\u25be' : '\u25b8',
+        isLeaf, isGroup: !isLeaf, leafCount,
+        sub: isLeaf ? this.fmtTraffic(node.ref.traffic) : (leafCount + ' leaves'),
+        infoOpen: open, infoIcon: open ? '\u229f' : '\u2295', infoInk: open ? '#2f5fd0' : '#bac4cf',
+        expandAllIcon: '\u25b8\u25b8',
+        metrics: open ? this.metricsFor(node, isLeaf) : [],
+        onHeader: () => this.toggleInfo(node.id),
+        onChevron: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.toggleExpand(node.id); },
+        onExpandAll: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.expandSubtree(node.id); },
+        onDetail: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.openDetail(node.id); },
+      });
+      if (parentAnchor) {
+        const xm = (parentAnchor.x + x) / 2;
+        links.push({ d: `M${parentAnchor.x},${parentAnchor.cy} C${xm},${parentAnchor.cy} ${xm},${cy} ${x},${cy}`, stroke: ink });
+      }
+      cursor += h + rowGap;
+      if (expanded && hasChildren) {
+        const anchor = { x: x + nodeW, cy };
+        node.children.forEach(c => walk(c, depth + 1, anchor));
+      }
+    };
+    walk(this.tree(), 0, null);
+    const maxX = nodes.reduce((m, n) => Math.max(m, n.x), 0);
+    return { nodes, links, treeW: maxX + nodeW + 4, treeH: cursor + 4 };
+  }
+
+  buildDetail(id) {
+    const D = this.state.D, lf = D.leaves[id];
+    const stateC = this.col(lf.state);
+    const kindColor = { skill: '#2f5fd0', api: '#475569', kb: '#6155d6', branch: '#b06f12', decision: '#c43d2a' };
+    const skeleton = (lf.skeleton || []).map(s => ({
+      label: s.label, kind: s.kind, color: s.missing ? '#a7b1bd' : (kindColor[s.kind] || '#475569'),
+      borderStyle: s.missing ? 'dashed' : 'solid', chipBg: s.missing ? '#eef2f6' : '#ffffff',
+      opacity: s.missing ? 0.7 : 1, strike: s.missing ? 'line-through' : 'none',
+    }));
+    let series = null;
+    if (lf.series) {
+      const labels = lf.seriesLabels || ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      const evt = lf.event ? lf.event.at : -1;
+      series = lf.series.map((v, i) => ({ v, h: v + '%', label: labels[i] || '', ink: i === evt ? '#c43d2a' : (lf.t2 === 'down' && i > evt ? '#d68b78' : '#93a3b5') }));
+    }
+    const predicates = (lf.predicates || []).map(p => {
+      const tone = p.money ? 'red' : (p.rate >= 1 ? 'amber' : (p.rate > 0 ? 'gray' : 'green'));
+      const pc = this.col(tone);
+      return { text: p.text, rate: this.fmtPct(p.rate), ink: pc.ink, bg: pc.bg, bd: pc.bd };
+    });
+    const cost = lf.cost || {};
+    const traces = (cost.traces || []).map(t => ({ id: t.id, tokens: this.fmtNum(t.tokens), latency: t.latency, note: t.note }));
+    return {
+      name: lf.name, path: 'ShopBot / ' + (lf.level || 'Escalation'),
+      stateInk: stateC.ink, stateBg: stateC.bg, stateBd: stateC.bd,
+      stateLabel: { green: 'all clear', amber: 'investigate', red: 'broken', gray: 'below floor' }[lf.state],
+      traffic: this.fmtNum(lf.traffic), stakesDisp: '\u2605'.repeat(lf.stakes) + '\u2606'.repeat(5 - lf.stakes),
+      skeleton, series, hasSeries: !!series, noSeries: !series,
+      event: lf.event ? lf.event.label : null, hasEvent: !!lf.event,
+      t1disp: this.fmtPct(lf.t1), t1feature: lf.t1feature || '\u2014', t1framing: this.framingFor(lf),
+      predicates, hasPredicates: predicates.length > 0, noPredicates: predicates.length === 0,
+      costAvg: this.fmtNum(cost.avg), costExpected: this.fmtNum(cost.expected),
+      costResid: cost.residual == null ? '\u2014' : (cost.residual > 0 ? '+' : '') + this.fmtNum(cost.residual),
+      costResidInk: cost.residual > 200 ? '#c43d2a' : (cost.residual == null ? '#8590a0' : '#4a5567'),
+      traces, hasTrips: traces.length > 0, noTrips: traces.length === 0,
+    };
+  }
+
+  renderVals() {
+    const stateLegend = [
+      { c: '#0e8f63', label: 'all clear' }, { c: '#b06f12', label: 'investigate' },
+      { c: '#c43d2a', label: 'broken' }, { c: '#8590a0', label: 'below floor' },
+    ];
+    const D = this.state.D;
+    const base = {
+      stateLegend,
+      isTree: this.state.screen === 'tree', isDetail: this.state.screen === 'detail',
+      expandAll: () => this.expandAll(), collapseAll: () => this.collapseAll(), back: () => this.back(),
+    };
+    if (!D) return { ...base, nodes: [], links: [], treeW: 600, treeH: 200, d: null };
+    const L = this.layout();
+    return { ...base, nodes: L.nodes, links: L.links, treeW: L.treeW, treeH: L.treeH, d: this.state.detailLeaf ? this.buildDetail(this.state.detailLeaf) : null };
+  }
+}
+</script>
+</body>
+</html>

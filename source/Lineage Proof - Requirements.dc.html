@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e7ebf1; }
+  ::selection { background: #d4e2f5; }
+  .doc { box-sizing: border-box; max-width: 8.5in; margin: 28px auto; background: #ffffff;
+         box-shadow: 0 1px 3px rgba(22,29,41,0.08), 0 12px 40px rgba(22,29,41,0.10);
+         padding: 0 clamp(24px, 5vw, 0.85in); }
+  .doc-frame { width: 100%; border-collapse: collapse; }
+  .doc-frame td { padding: 0; }
+  .pad-top, .pad-bottom { display: none; }
+  @page { size: letter; margin: 0; }
+  @media print {
+    html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    html, body { margin: 0; padding: 0; background: #fff; }
+    .doc { max-width: none !important; margin: 0 !important; box-shadow: none !important;
+           padding: 0 0.75in !important; }
+    .pad-top, .pad-bottom { display: table-cell; height: 0.7in; }
+    .sec, .reqrow, .callout, .scenario, .tier, .ix { break-inside: avoid; }
+    h1, h2, h3 { break-after: avoid; }
+    .screen-only { display: none !important; }
+  }
+</style>
+</helmet>
+<main class="doc" style="font-family: 'IBM Plex Sans', sans-serif; color: #1b2433; -webkit-font-smoothing: antialiased;">
+<table class="doc-frame" role="presentation">
+<thead><tr><td class="pad-top"></td></tr></thead>
+<tbody><tr><td>
+
+<!-- ============ MASTHEAD ============ -->
+<div style="padding: 52px 0 0;">
+  <div style="display: flex; align-items: center; gap: 11px; margin-bottom: 26px;">
+    <div style="width: 30px; height: 30px; border-radius: 7px; background: linear-gradient(140deg, #2f5fd0, #6155d6); flex-shrink: 0;"></div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 13px; letter-spacing: 3.5px; color: #161d29;">INVARA</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #98a4b3;">Invariants,&nbsp;verified</div>
+  </div>
+
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #2f5fd0; font-weight: 600; margin-bottom: 12px;">Product requirements &#183; working draft</div>
+  <h1 style="font-size: 33px; font-weight: 700; letter-spacing: -0.6px; line-height: 1.12; margin: 0 0 14px; text-wrap: balance; color: #161d29;">Lineage Proof Dashboard</h1>
+  <p style="font-size: 16px; line-height: 1.6; color: #4a5567; margin: 0 0 22px; max-width: 5.6in;">Reliability proof for agent fleets &mdash; measured from the traces you already have, never by re-running the agent.</p>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 8px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #5a6678;">
+    <span style="padding: 4px 10px; background: #eef2f6; border: 1px solid #dbe2ea; border-radius: 999px;">v0.4 &#183; draft</span>
+    <span style="padding: 4px 10px; background: #eef2f6; border: 1px solid #dbe2ea; border-radius: 999px;">updated 30 Jun 2026</span>
+    <span style="padding: 4px 10px; background: #eef2f6; border: 1px solid #dbe2ea; border-radius: 999px;">owner: TBD</span>
+    <span style="padding: 4px 10px; background: #e7eefb; border: 1px solid #c9dafa; border-radius: 999px; color: #2f5fd0;">status: for review</span>
+  </div>
+
+  <div style="display: flex; gap: 11px; padding: 13px 15px; margin: 24px 0 4px; background: #f6f8fb; border: 1px solid #e2e8f0; border-radius: 4px;">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #98a4b3; padding-top: 1px;">read me</div>
+    <div style="font-size: 12.5px; line-height: 1.6; color: #4a5567;">This is a markup target. Requirements are numbered <strong style="color:#161d29;">FR-#</strong>; the things still genuinely undecided are flagged <strong style="color:#92670f;">OQ-#</strong> (open question). Comment against any ID to drive the next revision &mdash; nothing here is settled.</div>
+  </div>
+</div>
+
+<div style="height: 1px; background: #e2e8f0; margin: 34px 0 36px;"></div>
+
+<!-- ============ §1 SUMMARY ============ -->
+<div class="sec" style="margin: 0 0 38px;">
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #2f5fd0; font-weight: 600; margin: 0 0 8px;">&#167;1 &#183; Summary</div>
+  <h2 style="font-size: 21px; font-weight: 700; color: #161d29; letter-spacing: -0.2px; margin: 0 0 14px; text-wrap: balance;">What this is</h2>
+  <p style="font-size: 15px; line-height: 1.66; color: #2b3444; margin: 0 0 14px;">The Lineage Proof dashboard answers one question about a fleet of production AI agents: <strong style="color:#161d29;">is each capability behaving reliably?</strong> &mdash; did it take the same path it took before, run the steps it is required to run, and stay inside its cost norms. It reads this entirely from traces the agents already emit; it does not re-run agents to score them.</p>
+  <p style="font-size: 15px; line-height: 1.66; color: #2b3444; margin: 0 0 14px;">The unit of measurement is the <strong style="color:#161d29;">leaf</strong> &mdash; a single intent the agent handles (e.g. <em>Refund Eligibility</em>, <em>Delivery Status</em>). Leaves roll up into capability levels and ultimately the agent. Every leaf is described by three structural signals plus a cost tripwire, and the product&rsquo;s core design commitment is that <strong style="color:#161d29;">these are never averaged into a single health score.</strong></p>
+</div>
+
+<!-- ============ §2 SCOPE ============ -->
+<div class="sec" style="margin: 0 0 38px;">
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #2f5fd0; font-weight: 600; margin: 0 0 8px;">&#167;2 &#183; Scope</div>
+  <h2 style="font-size: 21px; font-weight: 700; color: #161d29; letter-spacing: -0.2px; margin: 0 0 14px; text-wrap: balance;">What it measures &mdash; and what it deliberately does not</h2>
+  <div class="ix" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 4px 0 0;">
+    <div style="border: 1px solid #bce4d2; background: #f3faf6; border-radius: 4px; padding: 15px 16px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #0e8f63; font-weight: 600; margin-bottom: 10px;">In scope</div>
+      <div style="font-size: 13.5px; line-height: 1.55; color: #2b3444;">
+        <div style="padding: 4px 0;">Reliability: same path taken</div>
+        <div style="padding: 4px 0;">Required steps actually ran</div>
+        <div style="padding: 4px 0;">Cost within established norms</div>
+        <div style="padding: 4px 0;">Drift away from a leaf&rsquo;s own baseline</div>
+        <div style="padding: 4px 0;">Invariant / policy-step violations</div>
+      </div>
+    </div>
+    <div style="border: 1px solid #f2ccc2; background: #fdf5f3; border-radius: 4px; padding: 15px 16px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #c43d2a; font-weight: 600; margin-bottom: 10px;">Out of scope</div>
+      <div style="font-size: 13.5px; line-height: 1.55; color: #2b3444;">
+        <div style="padding: 4px 0;">Correctness of the answer</div>
+        <div style="padding: 4px 0;">Safety / harm evaluation</div>
+        <div style="padding: 4px 0;">A single rolled-up &ldquo;health score&rdquo;</div>
+        <div style="padding: 4px 0;">Re-running agents to grade them</div>
+        <div style="padding: 4px 0;">User-satisfaction or quality ratings</div>
+      </div>
+    </div>
+  </div>
+  <p style="font-size: 13px; line-height: 1.6; color: #7c899a; margin: 14px 0 0;">A leaf reading green means it did the same thing, ran its steps, and stayed in budget. It does <em>not</em> claim the agent gave a correct or safe answer &mdash; that boundary is restated to the user on every leaf-detail screen.</p>
+</div>
+
+<!-- ============ §3 MEASUREMENT MODEL ============ -->
+<div class="sec" style="margin: 0 0 30px;">
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #2f5fd0; font-weight: 600; margin: 0 0 8px;">&#167;3 &#183; Measurement model</div>
+  <h2 style="font-size: 21px; font-weight: 700; color: #161d29; letter-spacing: -0.2px; margin: 0 0 6px; text-wrap: balance;">Four signals, read independently</h2>
+  <p style="font-size: 15px; line-height: 1.66; color: #2b3444; margin: 0 0 20px;">Each leaf carries three structural tiers and a cost tripwire. They answer different questions and are never collapsed into each other. A leaf can be green on three and broken on the fourth &mdash; that is the whole point.</p>
+</div>
+
+<div class="tier" style="display: flex; gap: 14px; padding: 16px 17px; border: 1px solid #dbe2ea; border-left: 4px solid #b06f12; border-radius: 4px; margin: 0 0 12px; background: #ffffff;">
+  <div style="flex-shrink: 0; width: 58px;">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #92670f; font-weight: 600;">Tier 0</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #a28d62; margin-top: 2px;">cost</div>
+  </div>
+  <div>
+    <div style="font-size: 15px; font-weight: 700; color: #161d29; margin-bottom: 5px;">Cost / health tripwire</div>
+    <div style="font-size: 13.5px; line-height: 1.6; color: #2b3444;">A smoke alarm, not a diagnosis &mdash; kept out of the grid. Watches the <strong style="color:#161d29;">residual</strong>: actual cost minus the cost expected given context. A high residual is the looping signal, distinct from a leaf that is simply expensive. The only sensor that catches a retry spiral the structural tiers are blind to.</div>
+  </div>
+</div>
+
+<div class="tier" style="display: flex; gap: 14px; padding: 16px 17px; border: 1px solid #dbe2ea; border-left: 4px solid #2f5fd0; border-radius: 4px; margin: 0 0 12px; background: #ffffff;">
+  <div style="flex-shrink: 0; width: 58px;">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #2f5fd0; font-weight: 600;">Tier 1</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #93a0b0; margin-top: 2px;">consist.</div>
+  </div>
+  <div>
+    <div style="font-size: 15px; font-weight: 700; color: #161d29; margin-bottom: 5px;">Consistency</div>
+    <div style="font-size: 13.5px; line-height: 1.6; color: #2b3444;">A path-concentration percentage, read as a flag &mdash; conditioned on declared world-state features. <strong style="color:#161d29;">A low value can only mean &ldquo;investigate,&rdquo; never &ldquo;fail&rdquo;</strong>, because unlogged world-state understates true consistency. Explained-variation tells the user whether spread is real-world branching or genuine wobble.</div>
+  </div>
+</div>
+
+<div class="tier" style="display: flex; gap: 14px; padding: 16px 17px; border: 1px solid #dbe2ea; border-left: 4px solid #6155d6; border-radius: 4px; margin: 0 0 12px; background: #ffffff;">
+  <div style="flex-shrink: 0; width: 58px;">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #6155d6; font-weight: 600;">Tier 2</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #93a0b0; margin-top: 2px;">drift</div>
+  </div>
+  <div>
+    <div style="font-size: 15px; font-weight: 700; color: #161d29; margin-bottom: 5px;">Drift</div>
+    <div style="font-size: 13.5px; line-height: 1.6; color: #2b3444;">The movement, not the level. A static 78% is shruggable; a step-down from 94% to 78% is not. Drift annotates the causal event (a deploy, a skill or KB version bump) on the timeline, so the change is tied to its cause before any invariant is breached.</div>
+  </div>
+</div>
+
+<div class="tier" style="display: flex; gap: 14px; padding: 16px 17px; border: 1px solid #dbe2ea; border-left: 4px solid #c43d2a; border-radius: 4px; margin: 0 0 18px; background: #ffffff;">
+  <div style="flex-shrink: 0; width: 58px;">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #c43d2a; font-weight: 600;">Tier 3</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #93a0b0; margin-top: 2px;">invariant</div>
+  </div>
+  <div>
+    <div style="font-size: 15px; font-weight: 700; color: #161d29; margin-bottom: 5px;">Invariants</div>
+    <div style="font-size: 13.5px; line-height: 1.6; color: #2b3444;">A violation rate, trusted like a defect count: did a required step run before the consequential action. Surfaces the <strong style="color:#c43d2a;">money quadrant</strong> &mdash; a leaf that is highly consistent <em>and</em> violating, i.e. reliably doing the wrong thing. This state is invisible to consistency alone, and is the reason the tiers must stay separate.</div>
+  </div>
+</div>
+
+<div class="callout" style="display: flex; gap: 12px; padding: 14px 16px; background: #f0f3fb; border: 1px solid #cdd9f3; border-left: 3px solid #2f5fd0; border-radius: 4px; margin: 0 0 14px;">
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0;">Gate</div>
+  <div style="font-size: 13.5px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">The intent classifier gates everything.</strong> Every per-leaf number inherits the routing noise of the classifier that sorted traces into leaves. When classifier reproducibility falls below the trust threshold, all per-leaf numbers are dimmed and marked <span style="font-family:'IBM Plex Mono',monospace;">low-confidence</span> until the gate clears. Fix the classifier before trusting the grid.</div>
+</div>
+
+<div class="callout" style="display: flex; gap: 12px; padding: 13px 16px; background: #fbf6ec; border: 1px solid #ead9b3; border-left: 3px solid #b06f12; border-radius: 4px; margin: 0 0 38px;">
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #92670f; flex-shrink: 0;">OQ-1</div>
+  <div style="font-size: 13.5px; line-height: 1.6; color: #2b3444;">Exact formulae and thresholds for each tier (consistency conditioning, drift detection, the classifier trust gate) are not pinned in this draft. Confirm whether they belong in this PRD or a separate measurement spec.</div>
+</div>
+
+<!-- ============ §4 IA / SCREENS ============ -->
+<div class="sec" style="margin: 0 0 22px;">
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #2f5fd0; font-weight: 600; margin: 0 0 8px;">&#167;4 &#183; Screens</div>
+  <h2 style="font-size: 21px; font-weight: 700; color: #161d29; letter-spacing: -0.2px; margin: 0 0 14px; text-wrap: balance;">Two screens, one drill path</h2>
+  <p style="font-size: 15px; line-height: 1.66; color: #2b3444; margin: 0 0 4px;">The product is a fleet overview that drills into a single leaf. There is no third level: branches and traces live <em>inside</em> a leaf, never as their own nodes.</p>
+</div>
+
+<div class="ix" style="border: 1px solid #dbe2ea; border-radius: 4px; overflow: hidden; margin: 0 0 16px;">
+  <div style="padding: 12px 16px; background: #f3f7fb; border-bottom: 1px solid #dbe2ea;">
+    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #2f5fd0; font-weight: 600;">Screen A</span>
+    <span style="font-size: 14px; font-weight: 700; color: #161d29; margin-left: 10px;">Fleet overview</span>
+  </div>
+  <div style="padding: 14px 16px; font-size: 13.5px; line-height: 1.7; color: #2b3444;">
+    <div style="padding: 2px 0;"><strong style="color:#161d29;">Scope bar &amp; filters</strong> &mdash; agent / team / org selectors and a 24h&#8201;&#183;&#8201;7d&#8201;&#183;&#8201;30d window.</div>
+    <div style="padding: 2px 0;"><strong style="color:#161d29;">Classifier gate banner</strong> &mdash; shown only when reproducibility is below threshold.</div>
+    <div style="padding: 2px 0;"><strong style="color:#161d29;">Stat tiles</strong> &mdash; classifier reproducibility, leaves measured, needs attention, new leaves (7d), open tripwires.</div>
+    <div style="padding: 2px 0;"><strong style="color:#161d29;">Capability tree</strong> &mdash; levels and leaves, each leaf showing its three-tuple + tripwire count; level rows roll up to their weakest child.</div>
+    <div style="padding: 2px 0;"><strong style="color:#161d29;">Cost / intent panel</strong> &mdash; residual per leaf, flagging looping cost distinctly from expensive-by-design leaves.</div>
+    <div style="padding: 2px 0;"><strong style="color:#161d29;">Needs attention</strong> &mdash; ranked queue of where to look first.</div>
+  </div>
+</div>
+
+<div class="ix" style="border: 1px solid #dbe2ea; border-radius: 4px; overflow: hidden; margin: 0 0 16px;">
+  <div style="padding: 12px 16px; background: #f3f7fb; border-bottom: 1px solid #dbe2ea;">
+    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #6155d6; font-weight: 600;">Screen B</span>
+    <span style="font-size: 14px; font-weight: 700; color: #161d29; margin-left: 10px;">Leaf detail</span>
+  </div>
+  <div style="padding: 14px 16px; font-size: 13.5px; line-height: 1.7; color: #2b3444;">
+    <div style="padding: 2px 0;"><strong style="color:#161d29;">Header</strong> &mdash; name, traffic, stakes, and current state.</div>
+    <div style="padding: 2px 0;"><strong style="color:#161d29;">Path view</strong> &mdash; the dominant skeleton and the diff come <em>before</em> the consistency number; dropped steps shown struck-through; distribution over skeletons.</div>
+    <div style="padding: 2px 0;"><strong style="color:#161d29;">Three-tuple</strong> &mdash; T1 / T2 / T3 as three independent readouts, each with its own reading rule.</div>
+    <div style="padding: 2px 0;"><strong style="color:#161d29;">Tier 0 cost block</strong> &mdash; visually distinct from the grid; flagged traces with a replay drill-down.</div>
+    <div style="padding: 2px 0;"><strong style="color:#161d29;">Leaf switcher + scope reminder</strong> &mdash; move between leaves; restate reliability &ne; correctness.</div>
+  </div>
+</div>
+
+<div class="callout" style="display: flex; gap: 12px; padding: 13px 16px; background: #fbf6ec; border: 1px solid #ead9b3; border-left: 3px solid #b06f12; border-radius: 4px; margin: 0 0 38px;">
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #92670f; flex-shrink: 0;">OQ-2</div>
+  <div style="font-size: 13.5px; line-height: 1.6; color: #2b3444;">The agent / team / org / window filters are present in the mock but not yet wired. Confirm what each filters, whether all four ship in v1, and whether there is a cross-agent rollup above the single-agent tree.</div>
+</div>
+
+<!-- ============ §5 FUNCTIONAL REQUIREMENTS ============ -->
+<div class="sec" style="margin: 0 0 10px;">
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #2f5fd0; font-weight: 600; margin: 0 0 8px;">&#167;5 &#183; Functional requirements</div>
+  <h2 style="font-size: 21px; font-weight: 700; color: #161d29; letter-spacing: -0.2px; margin: 0 0 6px; text-wrap: balance;">What the product must do</h2>
+</div>
+
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #7c899a; margin: 22px 0 4px;">A &#183; Fleet overview</div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-1</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">Capability tree of every measured leaf,</strong> grouped by capability level.</div></div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-2</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">Each leaf shows the full three-tuple plus tripwire count,</strong> never a single collapsed score.</div></div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-3</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">Level rollups display the weakest-link child</strong> (worst severity, then worst invariant, then lowest consistency) &mdash; not an average.</div></div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-4</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">Branches are never nodes</strong> &mdash; they exist only inside leaf detail.</div></div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-5</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">Header stat tiles:</strong> classifier reproducibility, leaves measured, needs attention, new leaves (7d), open tripwires.</div></div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-6</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">&ldquo;Needs attention&rdquo; ranks by severity then stakes</strong> &mdash; never by traffic volume.</div></div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-7</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">Cost panel surfaces residual,</strong> flagging high residual (looping) distinctly from a leaf that is legitimately expensive.</div></div>
+
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #7c899a; margin: 24px 0 4px;">B &#183; Classifier gate</div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-8</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">A classifier-reproducibility gate sits above all per-leaf numbers.</strong> Below threshold, every per-leaf number is dimmed and marked low-confidence.</div></div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-9</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">The gated state is previewable on demand</strong> so reviewers can see the low-confidence board before it happens.</div></div>
+
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #7c899a; margin: 24px 0 4px;">C &#183; Leaf detail</div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-10</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">Leaf detail leads with the path and the diff</strong> before showing any number.</div></div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-11</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">Dropped or missing skeleton steps are shown struck-through</strong> with a note on when and why they left the path.</div></div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-12</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">T1 / T2 / T3 are three independent readouts,</strong> never averaged; each carries its own reading rule. A low T1 can only invite investigation, never fail a leaf.</div></div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-13</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">T2 annotates the causal event</strong> (deploy, skill/KB version change) on its timeline.</div></div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-14</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">T3 flags the money quadrant</strong> &mdash; consistent and violating &mdash; explicitly.</div></div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-15</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">Tier 0 cost is kept visually out of the grid</strong> and lists flagged traces with a replay drill-down.</div></div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-16</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">A leaf switcher</strong> moves between leaves without returning to fleet.</div></div>
+
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #7c899a; margin: 24px 0 4px;">D &#183; Honesty &amp; data integrity</div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-17</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">Below the traffic floor, show a blank, never a fabricated number</strong> &mdash; but still surface high-stakes low-traffic leaves rather than hiding them.</div></div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-18</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">All numbers derive from existing traces;</strong> the agent is never re-run to measure it. Replay is an explicit, separately-triggered drill-down.</div></div>
+<div class="reqrow" style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px solid #eef2f6; margin-bottom: 4px;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #2f5fd0; flex-shrink: 0; width: 46px; padding-top: 2px;">FR-19</div><div style="font-size: 14px; line-height: 1.6; color: #2b3444;"><strong style="color:#161d29;">The dashboard displays its own limits</strong> &mdash; a persistent caveats strip naming what the numbers cannot tell you.</div></div>
+
+<div class="callout" style="display: flex; gap: 12px; padding: 13px 16px; background: #fbf6ec; border: 1px solid #ead9b3; border-left: 3px solid #b06f12; border-radius: 4px; margin: 22px 0 38px;">
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #92670f; flex-shrink: 0;">OQ-3</div>
+  <div style="font-size: 13.5px; line-height: 1.6; color: #2b3444;">No alerting requirement is stated. Decide whether an open tripwire or a new money-quadrant leaf pages someone, or whether the product is dashboard-only in v1.</div>
+</div>
+
+<!-- ============ §6 SCENARIOS ============ -->
+<div class="sec" style="margin: 0 0 18px;">
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #2f5fd0; font-weight: 600; margin: 0 0 8px;">&#167;6 &#183; Acceptance scenarios</div>
+  <h2 style="font-size: 21px; font-weight: 700; color: #161d29; letter-spacing: -0.2px; margin: 0 0 6px; text-wrap: balance;">Five cases the product must get right</h2>
+  <p style="font-size: 15px; line-height: 1.66; color: #2b3444; margin: 0 0 6px;">These are the canonical leaves the model is designed to expose. If the dashboard handles all five honestly, the design holds.</p>
+</div>
+
+<div class="scenario" style="border: 1px solid #f2ccc2; border-radius: 4px; overflow: hidden; margin: 0 0 12px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding: 11px 15px; background: #fdf5f3; border-bottom: 1px solid #f2ccc2;">
+    <span style="width: 8px; height: 8px; border-radius: 50%; background: #c43d2a;"></span>
+    <span style="font-size: 14px; font-weight: 700; color: #161d29;">Refund Eligibility</span>
+    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.5px; text-transform: uppercase; color: #c43d2a; background: #fbeae5; border: 1px solid #f2ccc2; border-radius: 2px; padding: 2px 7px;">money quadrant</span>
+  </div>
+  <div style="padding: 12px 15px; font-size: 13.5px; line-height: 1.6; color: #2b3444;">Consistency reads 99.4% while a required window-check, dropped after a skill update, is now skipped on 100% of traces. <strong style="color:#161d29;">The product must show a violating leaf that consistency alone calls perfect.</strong></div>
+</div>
+
+<div class="scenario" style="border: 1px solid #f2ccc2; border-radius: 4px; overflow: hidden; margin: 0 0 12px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding: 11px 15px; background: #fdf5f3; border-bottom: 1px solid #f2ccc2;">
+    <span style="width: 8px; height: 8px; border-radius: 50%; background: #c43d2a;"></span>
+    <span style="font-size: 14px; font-weight: 700; color: #161d29;">Refund Processing</span>
+    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.5px; text-transform: uppercase; color: #6155d6; background: #efedfb; border: 1px solid #d8d4f3; border-radius: 2px; padding: 2px 7px;">drift event</span>
+  </div>
+  <div style="padding: 12px 15px; font-size: 13.5px; line-height: 1.6; color: #2b3444;">The dominant path fell 94%&#8201;&rarr;&#8201;78% when a policy KB version shipped. <strong style="color:#161d29;">The product must tie the step-down to its deploy, and treat the movement &mdash; not the 78% &mdash; as the signal.</strong></div>
+</div>
+
+<div class="scenario" style="border: 1px solid #f0ddb6; border-radius: 4px; overflow: hidden; margin: 0 0 12px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding: 11px 15px; background: #fdf9ef; border-bottom: 1px solid #f0ddb6;">
+    <span style="width: 8px; height: 8px; border-radius: 50%; background: #b06f12;"></span>
+    <span style="font-size: 14px; font-weight: 700; color: #161d29;">Escalation / Handoff</span>
+    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.5px; text-transform: uppercase; color: #92670f; background: #fbf1de; border: 1px solid #f0ddb6; border-radius: 2px; padding: 2px 7px;">cost tripwire</span>
+  </div>
+  <div style="padding: 12px 15px; font-size: 13.5px; line-height: 1.6; color: #2b3444;">All three structural tiers read green while a retry spiral burns 4&ndash;6&times; expected tokens on the same skeleton. <strong style="color:#161d29;">Only the Tier 0 tripwire can see this; the product must make that the visible alarm.</strong></div>
+</div>
+
+<div class="scenario" style="border: 1px solid #dde3ea; border-radius: 4px; overflow: hidden; margin: 0 0 12px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding: 11px 15px; background: #f5f7fa; border-bottom: 1px solid #dde3ea;">
+    <span style="width: 8px; height: 8px; border-radius: 50%; background: #8590a0;"></span>
+    <span style="font-size: 14px; font-weight: 700; color: #161d29;">Availability</span>
+    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.5px; text-transform: uppercase; color: #5a6678; background: #eef2f6; border: 1px solid #dde3ea; border-radius: 2px; padding: 2px 7px;">n too low &#183; high stakes</span>
+  </div>
+  <div style="padding: 12px 15px; font-size: 13.5px; line-height: 1.6; color: #2b3444;">140 traces over 7 days is below the traffic floor. <strong style="color:#161d29;">The product must show a blank &mdash; not a fabricated 100% &mdash; yet still surface the leaf because its stakes are high.</strong></div>
+</div>
+
+<div class="scenario" style="border: 1px solid #f0ddb6; border-radius: 4px; overflow: hidden; margin: 0 0 28px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding: 11px 15px; background: #fdf9ef; border-bottom: 1px solid #f0ddb6;">
+    <span style="width: 8px; height: 8px; border-radius: 50%; background: #b06f12;"></span>
+    <span style="font-size: 14px; font-weight: 700; color: #161d29;">Delivery Status</span>
+    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.5px; text-transform: uppercase; color: #92670f; background: #fbf1de; border: 1px solid #f0ddb6; border-radius: 2px; padding: 2px 7px;">false alarm</span>
+  </div>
+  <div style="padding: 12px 15px; font-size: 13.5px; line-height: 1.6; color: #2b3444;">A 70% consistency looks alarming but, conditioned on carrier status, resolves to a legitimate world-state branch. <strong style="color:#161d29;">The product must let amber mean &ldquo;investigate&rdquo; and let the investigation end in &ldquo;fine.&rdquo;</strong></div>
+</div>
+
+<!-- ============ §7 DATA MODEL ============ -->
+<div class="sec" style="margin: 0 0 16px;">
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #2f5fd0; font-weight: 600; margin: 0 0 8px;">&#167;7 &#183; Data model</div>
+  <h2 style="font-size: 21px; font-weight: 700; color: #161d29; letter-spacing: -0.2px; margin: 0 0 12px; text-wrap: balance;">The leaf object</h2>
+  <p style="font-size: 15px; line-height: 1.66; color: #2b3444; margin: 0 0 14px;">Every leaf the dashboard renders is one record with this shape. Levels reference leaves by id; this is the contract the data pipeline must satisfy.</p>
+</div>
+
+<div class="ix" style="border: 1px solid #dbe2ea; border-radius: 4px; overflow: hidden; margin: 0 0 14px;">
+  <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px; padding: 9px 15px; background: #f3f7fb; border-bottom: 1px solid #dbe2ea; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.8px; text-transform: uppercase; color: #7c899a;"><div>Field</div><div>Meaning</div></div>
+  <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px; padding: 9px 15px; border-bottom: 1px solid #eef2f6; font-size: 13px; line-height: 1.5; color: #2b3444;"><div style="font-family: 'IBM Plex Mono', monospace; color: #2f5fd0;">id, name, level</div><div>Identity and capability grouping.</div></div>
+  <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px; padding: 9px 15px; border-bottom: 1px solid #eef2f6; font-size: 13px; line-height: 1.5; color: #2b3444;"><div style="font-family: 'IBM Plex Mono', monospace; color: #2f5fd0;">traffic, stakes</div><div>Trace count in window; 1&ndash;5 stakes weight.</div></div>
+  <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px; padding: 9px 15px; border-bottom: 1px solid #eef2f6; font-size: 13px; line-height: 1.5; color: #2b3444;"><div style="font-family: 'IBM Plex Mono', monospace; color: #2f5fd0;">state, reason</div><div>Roll-up severity + the named case it represents.</div></div>
+  <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px; padding: 9px 15px; border-bottom: 1px solid #eef2f6; font-size: 13px; line-height: 1.5; color: #2b3444;"><div style="font-family: 'IBM Plex Mono', monospace; color: #2f5fd0;">t1, t1feature, t1explained</div><div>Consistency %, its conditioning features, explained-variation.</div></div>
+  <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px; padding: 9px 15px; border-bottom: 1px solid #eef2f6; font-size: 13px; line-height: 1.5; color: #2b3444;"><div style="font-family: 'IBM Plex Mono', monospace; color: #2f5fd0;">t2, series, event</div><div>Drift direction, timeline, annotated causal event.</div></div>
+  <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px; padding: 9px 15px; border-bottom: 1px solid #eef2f6; font-size: 13px; line-height: 1.5; color: #2b3444;"><div style="font-family: 'IBM Plex Mono', monospace; color: #2f5fd0;">t3, predicates</div><div>Violation rate + per-invariant predicates (money flag).</div></div>
+  <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px; padding: 9px 15px; border-bottom: 1px solid #eef2f6; font-size: 13px; line-height: 1.5; color: #2b3444;"><div style="font-family: 'IBM Plex Mono', monospace; color: #2f5fd0;">skeleton, dist</div><div>Dominant path (with missing steps) + distribution over skeletons.</div></div>
+  <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px; padding: 9px 15px; font-size: 13px; line-height: 1.5; color: #2b3444;"><div style="font-family: 'IBM Plex Mono', monospace; color: #2f5fd0;">cost{ }, trips</div><div>Avg / expected / residual, flagged traces, open tripwire count.</div></div>
+</div>
+
+<div class="callout" style="display: flex; gap: 12px; padding: 13px 16px; background: #fbf6ec; border: 1px solid #ead9b3; border-left: 3px solid #b06f12; border-radius: 4px; margin: 0 0 38px;">
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #92670f; flex-shrink: 0;">OQ-4</div>
+  <div style="font-size: 13.5px; line-height: 1.6; color: #2b3444;">How are <span style="font-family:'IBM Plex Mono',monospace;">stakes</span>, <span style="font-family:'IBM Plex Mono',monospace;">t1feature</span> conditioning sets, and invariant <span style="font-family:'IBM Plex Mono',monospace;">predicates</span> authored &mdash; manually per leaf, or harvested from policy? Who owns keeping them current?</div>
+</div>
+
+<!-- ============ §8 STATED LIMITS ============ -->
+<div class="sec" style="margin: 0 0 14px;">
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #2f5fd0; font-weight: 600; margin: 0 0 8px;">&#167;8 &#183; Stated limits</div>
+  <h2 style="font-size: 21px; font-weight: 700; color: #161d29; letter-spacing: -0.2px; margin: 0 0 12px; text-wrap: balance;">What the product admits it cannot do</h2>
+</div>
+<div style="display: flex; gap: 13px; padding: 10px 0; border-top: 1px solid #eef2f6; font-size: 13.5px; line-height: 1.6; color: #2b3444;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #98a4b3; flex-shrink: 0; width: 26px;">C1</span><span>Tier 1 may read undramatically green &mdash; strict skill/KB guidance can push consistency to ~95%+ with dull residual.</span></div>
+<div style="display: flex; gap: 13px; padding: 10px 0; border-top: 1px solid #eef2f6; font-size: 13.5px; line-height: 1.6; color: #2b3444;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #98a4b3; flex-shrink: 0; width: 26px;">C2</span><span>Tier 1 feature sets and Tier 2 thresholds are tunable inputs, not fixed constants.</span></div>
+<div style="display: flex; gap: 13px; padding: 10px 0; border-top: 1px solid #eef2f6; border-bottom: 1px solid #eef2f6; font-size: 13.5px; line-height: 1.6; color: #2b3444; margin-bottom: 38px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #98a4b3; flex-shrink: 0; width: 26px;">C3</span><span>Tier 3 invariant coverage is harvested from policy and still expanding; cost-anomaly tuning is in progress.</span></div>
+
+<!-- ============ §9 OPEN QUESTIONS ============ -->
+<div class="sec" style="margin: 0 0 16px;">
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #b06f12; font-weight: 600; margin: 0 0 8px;">&#167;9 &#183; Decisions needed</div>
+  <h2 style="font-size: 21px; font-weight: 700; color: #161d29; letter-spacing: -0.2px; margin: 0 0 12px; text-wrap: balance;">Open questions, gathered</h2>
+  <p style="font-size: 15px; line-height: 1.66; color: #2b3444; margin: 0 0 18px;">The fastest things to resolve. Each maps to an <strong style="color:#92670f;">OQ-#</strong> above; add the ones surfaced in review here.</p>
+</div>
+
+<div class="callout" style="display: flex; gap: 12px; padding: 12px 16px; background: #fbf6ec; border: 1px solid #ead9b3; border-left: 3px solid #b06f12; border-radius: 4px; margin: 0 0 10px;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #92670f; flex-shrink: 0;">OQ-1</div><div style="font-size: 13.5px; line-height: 1.6; color: #2b3444;">Tier formulae &amp; thresholds &mdash; in this PRD or a separate measurement spec?</div></div>
+<div class="callout" style="display: flex; gap: 12px; padding: 12px 16px; background: #fbf6ec; border: 1px solid #ead9b3; border-left: 3px solid #b06f12; border-radius: 4px; margin: 0 0 10px;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #92670f; flex-shrink: 0;">OQ-2</div><div style="font-size: 13.5px; line-height: 1.6; color: #2b3444;">Filters (agent/team/org/window) &mdash; v1 scope, what they filter, cross-agent rollup?</div></div>
+<div class="callout" style="display: flex; gap: 12px; padding: 12px 16px; background: #fbf6ec; border: 1px solid #ead9b3; border-left: 3px solid #b06f12; border-radius: 4px; margin: 0 0 10px;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #92670f; flex-shrink: 0;">OQ-3</div><div style="font-size: 13.5px; line-height: 1.6; color: #2b3444;">Alerting &mdash; do tripwires / new money-quadrant leaves page someone, or dashboard-only?</div></div>
+<div class="callout" style="display: flex; gap: 12px; padding: 12px 16px; background: #fbf6ec; border: 1px solid #ead9b3; border-left: 3px solid #b06f12; border-radius: 4px; margin: 0 0 10px;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #92670f; flex-shrink: 0;">OQ-4</div><div style="font-size: 13.5px; line-height: 1.6; color: #2b3444;">Authoring &amp; ownership of stakes, conditioning features, and invariant predicates.</div></div>
+<div class="callout" style="display: flex; gap: 12px; padding: 12px 16px; background: #fbf6ec; border: 1px solid #ead9b3; border-left: 3px solid #b06f12; border-radius: 4px; margin: 0 0 8px;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #92670f; flex-shrink: 0;">OQ-5</div><div style="font-size: 13.5px; line-height: 1.6; color: #2b3444;">Replay drill-down &mdash; who triggers it, run count, cost, and does it count as &ldquo;re-running the agent&rdquo;?</div></div>
+
+<div style="height: 1px; background: #e2e8f0; margin: 34px 0 18px;"></div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #98a4b3; line-height: 1.6; padding-bottom: 8px;">INVARA &#183; Lineage Proof &#183; requirements draft v0.4 &mdash; reconstructed from the working dashboard mock. Mark up any FR-# or OQ-# to drive the next pass.</div>
+
+</td></tr></tbody>
+<tfoot><tr><td class="pad-bottom"></td></tr></tfoot>
+</table>
+</main>
+</x-dc>
+</body>
+</html>

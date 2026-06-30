@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'IBM Plex Sans', sans-serif; }
+</style>
+</helmet>
+
+<!-- ===== INTRO ===== -->
+<div style="position: absolute; left: 40px; top: 0px; width: 1220px;">
+  <div data-drags-parent="1" style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #2f5fd0; margin-bottom: 8px;">Capability hierarchy &#183; visual options</div>
+  <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;">
+    <div style="font-size: 15px; color: #4a5567; line-height: 1.5; max-width: 720px;">Four ways to render <strong style="color:#1b2433;">agent &#8594; capability &#8594; leaf &#8594; intent</strong> graphically, replacing the dense number table. Same dataset (ShopBot, 36k traces / 7d) in every option. Pick one and I'll wire it into the main dashboard.</div>
+    <div style="display: flex; gap: 22px; flex-shrink: 0;">
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #7c899a; margin-bottom: 6px;">State</div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <sc-for list="{{ stateLegend }}" as="s" hint-placeholder-count="4">
+            <div style="display: flex; align-items: center; gap: 7px; font-size: 11px; color: #4a5567;"><span style="width: 9px; height: 9px; border-radius: 2px; background: {{ s.c }};"></span>{{ s.label }}</div>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #7c899a; margin-bottom: 6px;">Intent step</div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <sc-for list="{{ kindLegend }}" as="k" hint-placeholder-count="5">
+            <div style="display: flex; align-items: center; gap: 7px; font-size: 11px; color: #4a5567;"><span style="width: 9px; height: 9px; border-radius: 2px; background: {{ k.c }};"></span>{{ k.label }}</div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== OPTION A — LINEAGE RIVER (SANKEY) ===== -->
+<div style="position: absolute; left: 40px; top: 130px; width: 700px;">
+  <div data-drags-parent="1" style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; color: #7c899a; margin-bottom: 10px;">OPTION A</div>
+  <div style="background: #fff; border-radius: 2px; box-shadow: 0 1px 3px rgba(27,36,51,0.08); padding: 22px;">
+    <div style="font-size: 16px; font-weight: 700; color: #1b2433; margin-bottom: 2px;">Lineage river</div>
+    <div style="font-size: 12px; color: #7c899a; margin-bottom: 18px;">Flow widths = traffic volume. Reads the fleet&#39;s weight at a glance.</div>
+    <div style="position: relative; width: 640px; height: 392px;">
+      <svg width="640" height="392" viewBox="0 0 640 392" style="display: block;">
+        <sc-for list="{{ skRibbons }}" as="rb" hint-placeholder-count="16"><path d="{{ rb.d }}" fill="{{ rb.fill }}" fill-opacity="0.45"></path></sc-for>
+        <sc-for list="{{ skShapes }}" as="bar" hint-placeholder-count="17"><rect x="{{ bar.x }}" y="{{ bar.y }}" width="{{ bar.w }}" height="{{ bar.h }}" rx="2" fill="{{ bar.fill }}"></rect></sc-for>
+      </svg>
+      <sc-for list="{{ skLabels }}" as="lb" hint-placeholder-count="17">
+        <div style="position: absolute; left: {{ lb.left }}px; top: {{ lb.top }}px; width: {{ lb.w }}px; font-size: {{ lb.size }}px; font-weight: {{ lb.weight }}; color: {{ lb.ink }}; text-align: {{ lb.align }}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ lb.text }}</div>
+      </sc-for>
+    </div>
+    <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid #eef2f6; font-size: 11.5px; color: #4a5567; line-height: 1.5;"><strong style="color:#1b2433;">Best for</strong> &#8212; seeing where volume concentrates and which capabilities dominate. Click a node to drill into the leaf, then its intent path.</div>
+  </div>
+</div>
+
+<!-- ===== OPTION B — TREEMAP ===== -->
+<div style="position: absolute; left: 800px; top: 130px; width: 660px;">
+  <div data-drags-parent="1" style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; color: #7c899a; margin-bottom: 10px;">OPTION B</div>
+  <div style="background: #fff; border-radius: 2px; box-shadow: 0 1px 3px rgba(27,36,51,0.08); padding: 22px;">
+    <div style="font-size: 16px; font-weight: 700; color: #1b2433; margin-bottom: 2px;">Treemap</div>
+    <div style="font-size: 12px; color: #7c899a; margin-bottom: 18px;">Columns = capabilities, cells = leaves. Area = traffic, fill = state.</div>
+    <div style="position: relative; width: 600px; height: 372px; background: #f1f5f9; border-radius: 3px; overflow: hidden;">
+      <sc-for list="{{ tmCells }}" as="cl" hint-placeholder-count="16">
+        <div style="position: absolute; left: {{ cl.left }}px; top: {{ cl.top }}px; width: {{ cl.w }}px; height: {{ cl.h }}px; background: {{ cl.bg }}; border: 1px solid {{ cl.bd }}; border-radius: 1px; overflow: hidden; padding: 4px 7px; box-sizing: border-box;">
+          <sc-if value="{{ cl.showName }}" hint-placeholder-val="{{ true }}">
+            <div style="font-size: 10px; font-weight: 600; color: {{ cl.ink }}; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ cl.name }}</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; color: {{ cl.ink }}; opacity: 0.72;">{{ cl.sub }}</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid #eef2f6; font-size: 11.5px; color: #4a5567; line-height: 1.5;"><strong style="color:#1b2433;">Best for</strong> &#8212; maximum density with zero scrolling. Risk and volume jump out instantly; the intent path lives in a drill-down.</div>
+  </div>
+</div>
+
+<!-- ===== OPTION C — RADIAL SUNBURST ===== -->
+<div style="position: absolute; left: 40px; top: 700px; width: 460px;">
+  <div data-drags-parent="1" style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; color: #7c899a; margin-bottom: 10px;">OPTION C</div>
+  <div style="background: #fff; border-radius: 2px; box-shadow: 0 1px 3px rgba(27,36,51,0.08); padding: 22px;">
+    <div style="font-size: 16px; font-weight: 700; color: #1b2433; margin-bottom: 2px;">Radial sunburst</div>
+    <div style="font-size: 12px; color: #7c899a; margin-bottom: 14px;">All four levels in one ring: agent &#8594; capability &#8594; leaf &#8594; intent.</div>
+    <div style="position: relative; width: 380px; height: 380px; margin: 0 auto;">
+      <svg width="380" height="380" viewBox="0 0 380 380" style="display: block;">
+        <sc-for list="{{ sbArcs }}" as="ar" hint-placeholder-count="44"><path d="{{ ar.d }}" fill="{{ ar.fill }}" stroke="{{ ar.stroke }}" stroke-width="1"></path></sc-for>
+        <circle cx="190" cy="190" r="44" fill="#ffffff" stroke="#d8e0e8" stroke-width="1"></circle>
+      </svg>
+      <div style="position: absolute; left: 144px; top: 174px; width: 92px; text-align: center; font-size: 12.5px; font-weight: 700; color: #1b2433;">ShopBot</div>
+      <div style="position: absolute; left: 144px; top: 192px; width: 92px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: #7c899a;">36k / 7d</div>
+      <sc-for list="{{ sbCapLabels }}" as="cap" hint-placeholder-count="5">
+        <div style="position: absolute; left: {{ cap.left }}px; top: {{ cap.top }}px; width: {{ cap.w }}px; text-align: center; font-size: 9px; font-weight: 600; color: {{ cap.ink }}; line-height: 1.1;">{{ cap.text }}</div>
+      </sc-for>
+    </div>
+    <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid #eef2f6; font-size: 11.5px; color: #4a5567; line-height: 1.5;"><strong style="color:#1b2433;">Best for</strong> &#8212; the only option showing all four levels at once: outer ticks are the intent skeleton, colored by step kind.</div>
+  </div>
+</div>
+
+<!-- ===== OPTION D — NODE-LINK TREE ===== -->
+<div style="position: absolute; left: 540px; top: 700px; width: 760px;">
+  <div data-drags-parent="1" style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; color: #7c899a; margin-bottom: 10px;">OPTION D</div>
+  <div style="background: #fff; border-radius: 2px; box-shadow: 0 1px 3px rgba(27,36,51,0.08); padding: 22px;">
+    <div style="font-size: 16px; font-weight: 700; color: #1b2433; margin-bottom: 2px;">Node-link tree</div>
+    <div style="font-size: 12px; color: #7c899a; margin-bottom: 18px;">Familiar left-to-right tree. Each leaf carries a state dot + drift sparkline.</div>
+    <div style="position: relative; width: 680px; height: 470px;">
+      <svg width="680" height="470" viewBox="0 0 680 470" style="position: absolute; top: 0; left: 0;">
+        <sc-for list="{{ nlLinks }}" as="ln" hint-placeholder-count="16"><path d="{{ ln.d }}" fill="none" stroke="{{ ln.stroke }}" stroke-width="1.5" stroke-opacity="0.5"></path></sc-for>
+      </svg>
+      <sc-for list="{{ nlNodes }}" as="nd" hint-placeholder-count="17">
+        <div style="position: absolute; left: {{ nd.left }}px; top: {{ nd.top }}px; width: {{ nd.w }}px; height: {{ nd.h }}px; background: #ffffff; border: 1px solid #e7edf3; border-left: 3px solid {{ nd.dot }}; border-radius: 3px; display: flex; align-items: center; gap: 7px; padding: 0 9px; box-shadow: 0 1px 2px rgba(27,36,51,0.05);">
+          <div style="width: 7px; height: 7px; border-radius: 50%; background: {{ nd.dot }}; flex-shrink: 0;"></div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 11px; font-weight: 600; color: #1b2433; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ nd.name }}</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; color: #7c899a;">{{ nd.sub }}</div>
+          </div>
+          <div style="display: flex; align-items: flex-end; gap: 1.5px; height: 14px;">
+            <sc-for list="{{ nd.spark }}" as="sp" hint-placeholder-count="0"><div style="width: 2.5px; background: {{ sp.c }}; height: {{ sp.h }}px;"></div></sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid #eef2f6; font-size: 11.5px; color: #4a5567; line-height: 1.5;"><strong style="color:#1b2433;">Best for</strong> &#8212; keeping the explorable tree feel while dropping the number columns; expanding a leaf reveals its intent skeleton.</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { D: null };
+
+  async componentDidMount() {
+    const m = await import('./lineage-data.js');
+    this.setState({ D: m.default });
+  }
+
+  col(s) {
+    const m = {
+      green: { ink: '#0e8f63', bg: '#e6f5ee', bd: '#bce4d2' },
+      amber: { ink: '#b06f12', bg: '#fbf1de', bd: '#f0ddb6' },
+      red:   { ink: '#c43d2a', bg: '#fbeae5', bd: '#f2ccc2' },
+      gray:  { ink: '#8590a0', bg: '#eef2f6', bd: '#dde3ea' },
+    };
+    return m[s] || m.gray;
+  }
+  rank(s) { return { green: 0, gray: 1, amber: 2, red: 3 }[s] || 0; }
+  caps(D) {
+    const arr = D.levels.map(l => ({ id: l.id, name: l.name, kids: l.children.slice() }));
+    arr.push({ id: 'escalation_grp', name: 'Escalation', kids: ['escalation'] });
+    return arr;
+  }
+  capState(D, c) { return c.kids.map(k => D.leaves[k].state).reduce((a, b) => this.rank(b) > this.rank(a) ? b : a, 'green'); }
+  capTraf(D, c) { return c.kids.reduce((s, k) => s + D.leaves[k].traffic, 0); }
+  polar(cx, cy, r, deg) { const a = deg * Math.PI / 180; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }
+  arc(cx, cy, ri, ro, a0, a1) {
+    const large = (a1 - a0) > 180 ? 1 : 0;
+    const f = n => n.toFixed(2);
+    const [x0o, y0o] = this.polar(cx, cy, ro, a0);
+    const [x1o, y1o] = this.polar(cx, cy, ro, a1);
+    const [x1i, y1i] = this.polar(cx, cy, ri, a1);
+    const [x0i, y0i] = this.polar(cx, cy, ri, a0);
+    return `M${f(x0o)},${f(y0o)} A${ro},${ro} 0 ${large} 1 ${f(x1o)},${f(y1o)} L${f(x1i)},${f(y1i)} A${ri},${ri} 0 ${large} 0 ${f(x0i)},${f(y0i)} Z`;
+  }
+  ribbon(x0, t0, b0, x1, t1, b1) {
+    const xm = (x0 + x1) / 2;
+    return `M${x0},${t0} C${xm},${t0} ${xm},${t1} ${x1},${t1} L${x1},${b1} C${xm},${b1} ${xm},${b0} ${x0},${b0} Z`;
+  }
+
+  renderVals() {
+    const D = this.state.D;
+    const stateLegend = [
+      { c: '#0e8f63', label: 'all clear' }, { c: '#b06f12', label: 'investigate' },
+      { c: '#c43d2a', label: 'broken' }, { c: '#8590a0', label: 'below floor' },
+    ];
+    const kindLegend = [
+      { c: '#2f5fd0', label: 'skill' }, { c: '#475569', label: 'api' },
+      { c: '#6155d6', label: 'kb' }, { c: '#b06f12', label: 'branch' }, { c: '#c43d2a', label: 'decision' },
+    ];
+    if (!D) return { ready: false, stateLegend, kindLegend, tmCells: [], nlNodes: [], nlLinks: [], skShapes: [], skRibbons: [], skLabels: [], sbArcs: [], sbCapLabels: [] };
+
+    const caps = this.caps(D);
+    const T = caps.reduce((s, c) => s + this.capTraf(D, c), 0);
+    const fmt = n => n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : String(n);
+
+    // ---------- TREEMAP ----------
+    const TW = 600, TH = 372, hh = 24;
+    const tmCells = []; let tx = 0;
+    caps.forEach(c => {
+      const ct = this.capTraf(D, c), colW = TW * ct / T, cs = this.col(this.capState(D, c));
+      tmCells.push({ left: tx + 1, top: 0, w: colW - 2, h: hh - 2, bg: cs.ink, bd: cs.ink, ink: '#ffffff', name: c.name, sub: fmt(ct), showName: colW > 58 });
+      let y = hh;
+      const kids = c.kids.slice().sort((a, b) => D.leaves[b].traffic - D.leaves[a].traffic);
+      kids.forEach(k => {
+        const lf = D.leaves[k], lh = (TH - hh) * lf.traffic / ct, lc = this.col(lf.state);
+        tmCells.push({ left: tx + 1, top: y + 1, w: colW - 2, h: lh - 2, bg: lc.bg, bd: lc.bd, ink: lc.ink, name: lf.name, sub: fmt(lf.traffic), showName: (lh > 28 && colW > 70) });
+        y += lh;
+      });
+      tx += colW;
+    });
+
+    // ---------- NODE-LINK ----------
+    const NW = 680, NH = 470, agentX = 8, agentW = 118, capX = 236, capW = 158, leafX = 452, leafW = 222;
+    const flat = []; caps.forEach(c => c.kids.forEach(k => flat.push({ k, cap: c.id })));
+    const nL = flat.length, padT = 16, step = (NH - 2 * padT) / (nL - 1);
+    const leafY = {}; flat.forEach((f, i) => leafY[f.k] = padT + step * i);
+    const nlNodes = [], nlLinks = [], agentY = NH / 2;
+    nlNodes.push({ left: agentX, top: agentY - 22, w: agentW, h: 44, name: 'ShopBot', sub: 'fleet agent', dot: '#2f5fd0', spark: [] });
+    caps.forEach(c => {
+      const ys = c.kids.map(k => leafY[k]), cyy = ys.reduce((a, b) => a + b, 0) / ys.length, cs = this.col(this.capState(D, c));
+      nlNodes.push({ left: capX, top: cyy - 15, w: capW, h: 30, name: c.name, sub: fmt(this.capTraf(D, c)), dot: cs.ink, spark: [] });
+      nlLinks.push({ d: `M${agentX + agentW},${agentY} C${(agentX + agentW + capX) / 2},${agentY} ${(agentX + agentW + capX) / 2},${cyy} ${capX},${cyy}`, stroke: cs.ink });
+      c.kids.forEach(k => {
+        const lf = D.leaves[k], ly = leafY[k], lc = this.col(lf.state);
+        nlLinks.push({ d: `M${capX + capW},${cyy} C${(capX + capW + leafX) / 2},${cyy} ${(capX + capW + leafX) / 2},${ly} ${leafX},${ly}`, stroke: lc.ink });
+        let spark = [];
+        if (lf.series) { const s = lf.series.slice(-7), mn = Math.min(...s), mx = Math.max(...s); spark = s.map(v => ({ h: mx > mn ? (5 + 9 * (v - mn) / (mx - mn)) : 9, c: lc.ink })); }
+        nlNodes.push({ left: leafX, top: ly - 15, w: leafW, h: 30, name: lf.name, sub: fmt(lf.traffic), dot: lc.ink, spark });
+      });
+    });
+
+    // ---------- SANKEY ----------
+    const SH = 392, aX = 26, bw = 15, cX = 312, lX = 599, gapL = 5, gapC = 10;
+    const leavesFlat = []; caps.forEach(c => c.kids.forEach(k => leavesFlat.push({ k, cap: c })));
+    const usableL = SH - gapL * (leavesFlat.length - 1), scale = usableL / T;
+    const capH = {}; caps.forEach(c => capH[c.id] = this.capTraf(D, c) * scale);
+    const capStackH = caps.reduce((s, c) => s + capH[c.id], 0) + gapC * (caps.length - 1);
+    const agentStackH = caps.reduce((s, c) => s + capH[c.id], 0);
+    const skShapes = [], skRibbons = [], skLabels = [];
+    const agentTop = (SH - agentStackH) / 2;
+    skShapes.push({ x: aX, y: agentTop, w: bw, h: agentStackH, fill: '#2f5fd0' });
+    skLabels.push({ left: aX - 4, top: agentTop - 18, text: 'ShopBot', ink: '#1b2433', w: 120, size: 12, weight: 700, align: 'left' });
+    const capPos = {}; let cyc = (SH - capStackH) / 2, aCursor = agentTop;
+    caps.forEach(c => {
+      const h = capH[c.id], cs = this.col(this.capState(D, c));
+      capPos[c.id] = { y: cyc, h };
+      skShapes.push({ x: cX, y: cyc, w: bw, h, fill: cs.ink });
+      skLabels.push({ left: cX + bw + 8, top: cyc + h / 2 - 7, text: c.name, ink: '#4a5567', w: 150, size: 10.5, weight: 600, align: 'left' });
+      skRibbons.push({ d: this.ribbon(aX + bw, aCursor, aCursor + h, cX, cyc, cyc + h), fill: cs.ink });
+      aCursor += h; cyc += h + gapC;
+    });
+    const leafStackH = leavesFlat.reduce((s, f) => s + D.leaves[f.k].traffic * scale, 0) + gapL * (leavesFlat.length - 1);
+    let ly2 = (SH - leafStackH) / 2;
+    const capCursor = {}; caps.forEach(c => capCursor[c.id] = capPos[c.id].y);
+    leavesFlat.forEach(f => {
+      const lf = D.leaves[f.k], h = lf.traffic * scale, lc = this.col(lf.state);
+      skShapes.push({ x: lX, y: ly2, w: bw, h, fill: lc.ink });
+      skLabels.push({ left: lX - 162, top: ly2 + h / 2 - 7, text: lf.name, ink: '#4a5567', w: 150, size: 10, weight: 500, align: 'right' });
+      const oy = capCursor[f.cap.id]; capCursor[f.cap.id] += h;
+      skRibbons.push({ d: this.ribbon(cX + bw, oy, oy + h, lX, ly2, ly2 + h), fill: lc.ink });
+      ly2 += h + gapL;
+    });
+
+    // ---------- SUNBURST ----------
+    const cxr = 190, r0 = 44, r1 = 104, r2 = 160, r3 = 184;
+    const kindColor = { skill: '#2f5fd0', api: '#475569', kb: '#6155d6', branch: '#b06f12', decision: '#c43d2a' };
+    const sbArcs = [], sbCapLabels = []; let ang = -90;
+    caps.forEach(c => {
+      const ct = this.capTraf(D, c), span = 360 * ct / T, cs = this.col(this.capState(D, c));
+      sbArcs.push({ d: this.arc(cxr, cxr, r0, r1, ang, ang + span), fill: cs.bg, stroke: '#ffffff' });
+      if (span > 20) { const mid = ang + span / 2, [lx, lyy] = this.polar(cxr, cxr, (r0 + r1) / 2, mid); sbCapLabels.push({ left: lx - 46, top: lyy - 8, text: c.name, ink: cs.ink, w: 92 }); }
+      let la = ang;
+      c.kids.forEach(k => {
+        const lf = D.leaves[k], ls = 360 * lf.traffic / T, lc = this.col(lf.state);
+        sbArcs.push({ d: this.arc(cxr, cxr, r1, r2, la, la + ls), fill: lc.ink, stroke: '#ffffff' });
+        const sk = lf.skeleton || [], ti = sk.length || 1, tw = ls / ti; let ta = la;
+        sk.forEach(stp => { if (tw > 1.2) sbArcs.push({ d: this.arc(cxr, cxr, r2, r3, ta + 0.5, ta + tw - 0.5), fill: kindColor[stp.kind] || '#94a3b8', stroke: '#ffffff' }); ta += tw; });
+        la += ls;
+      });
+      ang += span;
+    });
+
+    return { ready: true, stateLegend, kindLegend, tmCells, nlNodes, nlLinks, skShapes, skRibbons, skLabels, sbArcs, sbCapLabels };
+  }
+}
+</script>
+</body>
+</html>
