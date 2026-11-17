@@ -28,6 +28,8 @@
   * { box-sizing: border-box; }
   body { margin: 0; }
   ::selection { background: #d4e2f5; }
+  /* embedded tree is a standalone page; drop its full-viewport min-height */
+  .cap-embed [style*="min-height: 100vh"] { min-height: 0 !important; }
 </style>
 </helmet>
 <div style="min-height: 100vh; background: #eceff4; font-family: 'IBM Plex Sans', sans-serif; color: #1b2433; -webkit-font-smoothing: antialiased; padding: 0 0 64px;">
@@ -233,21 +235,21 @@
 
     <!-- ================= SCREEN A BODY ================= -->
     <sc-if value="{{ isFleet }}" hint-placeholder-val="{{ true }}">
-    <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 22px; align-items: start;">
+    <div style="display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start;">
 
       <!-- ----- INTERACTIVE CAPABILITY TREE ----- -->
-      <div>
+      <div style="flex: 1.4 1 520px; min-width: 0;">
         <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px;">
           <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #1b2433; font-weight: 600;">Interactive Capability Tree</div>
           <div style="font-size: 10.5px; color: #7c899a;">expand / collapse lineage, click a node for rolled-up min &#183; med &#183; max</div>
         </div>
-        <div style="border: 1px solid #dbe2ea; border-radius: 3px; overflow: hidden; background: #ffffff;">
+        <div class="cap-embed" style="border: 1px solid #dbe2ea; border-radius: 3px; overflow: hidden; background: #ffffff;">
           <dc-import name="Capability Tree" hint-size="100%,860px"></dc-import>
         </div>
       </div>
 
       <!-- ----- CAPABILITY TREE ----- -->
-      <div style="background: #ffffff; border: 1px solid #dbe2ea; border-radius: 3px; overflow: hidden;">
+      <div style="flex: 1 1 560px; min-width: 0; background: #ffffff; border: 1px solid #dbe2ea; border-radius: 3px; overflow: hidden;">
         <div style="display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; border-bottom: 1px solid #e7edf3;">
           <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #1b2433; font-weight: 600;">Capability Tree</div>
           <div style="font-size: 10.5px; color: #7c899a;">three-tuple per leaf · rollups are weakest-link</div>
